@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Santhosh P | Mechatronics Engineering Student</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root { --ink:#202522; --muted:#68716c; --paper:#f7f5ef; --card:#fffdf8; --line:#dfe3db; --green:#1e6b52; --lime:#d5e86b; --orange:#e47e43; }
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { margin:0; color:var(--ink); background:var(--paper); font-family:'DM Sans',sans-serif; }
+a { color:inherit; text-decoration:none; }
+.container { width:min(1120px, calc(100% - 40px)); margin:auto; }
+.site-header { position:sticky; top:0; z-index:10; background:rgba(247,245,239,.92); border-bottom:1px solid rgba(223,227,219,.8); backdrop-filter:blur(14px); }
+.header-inner { min-height:76px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+.logo { font:700 19px 'Space Grotesk',sans-serif; letter-spacing:-.5px; }
+.logo span { color:var(--orange); }
+.nav { display:flex; gap:26px; color:var(--muted); font-size:14px; font-weight:600; }
+.nav a:hover { color:var(--green); }
+.hero { padding:100px 0 92px; overflow:hidden; }
+.hero-grid { display:grid; grid-template-columns:1.25fr .75fr; align-items:center; gap:70px; }
+.kicker { color:var(--green); font-size:13px; font-weight:700; letter-spacing:1.8px; text-transform:uppercase; margin:0 0 20px; }
+h1,h2,h3 { font-family:'Space Grotesk',sans-serif; }
+h1 { max-width:720px; font-size:clamp(46px,7vw,84px); line-height:.98; letter-spacing:-4px; margin:0 0 26px; }
+h1 em { color:var(--green); font-style:normal; }
+.lede { max-width:570px; color:var(--muted); font-size:18px; line-height:1.65; margin:0 0 34px; }
+.actions { display:flex; gap:12px; flex-wrap:wrap; }
+.button { display:inline-flex; align-items:center; justify-content:center; padding:13px 20px; border:1px solid var(--green); border-radius:5px; color:white; background:var(--green); font-weight:700; font-size:14px; }
+.button.secondary { color:var(--green); background:transparent; }
+.button:hover { transform:translateY(-2px); }
+.hero-card { min-height:330px; padding:28px; border-radius:18px; background:var(--green); color:white; position:relative; box-shadow:18px 18px 0 var(--lime); }
+.hero-card:after { content:'+'; position:absolute; right:25px; top:10px; font-size:86px; line-height:1; color:rgba(255,255,255,.18); }
+.hero-card h2 { max-width:260px; font-size:30px; line-height:1.1; margin:0 0 70px; }
+.stat { border-top:1px solid rgba(255,255,255,.3); padding-top:14px; color:#dbe9d8; font-size:14px; }
+.stat strong { display:block; color:white; font:700 22px 'Space Grotesk',sans-serif; margin-bottom:4px; }
+.section { padding:92px 0; border-top:1px solid var(--line); }
+.section-heading { max-width:560px; margin-bottom:42px; }
+.section-heading h2 { font-size:clamp(34px,5vw,54px); letter-spacing:-2px; margin:0 0 14px; }
+.section-heading p { color:var(--muted); line-height:1.65; margin:0; }
+.about-grid { display:grid; grid-template-columns:1fr minmax(190px,240px) 1fr; gap:42px; align-items:start; }
+.copy { color:var(--muted); font-size:17px; line-height:1.75; margin:0; }
+.profile-frame { position:relative; aspect-ratio:1; overflow:hidden; border:10px solid var(--green); outline:2px solid var(--orange); outline-offset:7px; background:var(--lime); box-shadow:12px 12px 0 var(--orange); }
+.profile-frame:before { content:'SP'; position:absolute; inset:0; display:grid; place-items:center; color:rgba(30,107,82,.35); font:700 58px 'Space Grotesk',sans-serif; letter-spacing:-3px; }
+.profile-frame img { position:relative; z-index:1; width:100%; height:100%; display:block; object-fit:cover; }
+.profile-frame input { position:absolute; z-index:2; inset:0; width:100%; height:100%; cursor:pointer; opacity:0; }
+.profile-frame-label { position:absolute; z-index:3; right:8px; bottom:8px; left:8px; padding:8px; color:white; background:rgba(32,37,34,.82); font-size:11px; font-weight:700; text-align:center; pointer-events:none; }
+.skills { display:flex; flex-wrap:wrap; gap:10px; align-content:flex-start; }
+.skill { padding:11px 15px; border:1px solid var(--line); background:var(--card); border-radius:4px; font-size:14px; font-weight:600; }
+.projects { display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
+.project { min-height:270px; padding:28px; display:flex; flex-direction:column; justify-content:space-between; background:var(--card); border:1px solid var(--line); border-radius:10px; }
+.project.featured { background:var(--orange); color:white; border-color:var(--orange); }
+.project-number { font:600 14px 'Space Grotesk',sans-serif; opacity:.7; }
+.project h3 { font-size:28px; letter-spacing:-1px; margin:0 0 10px; }
+.project p { color:var(--muted); line-height:1.6; margin:0; }
+.featured p { color:#fff0e6; }
+.project-tag { font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase; }
+.experience { display:grid; grid-template-columns:160px 1fr; gap:42px; padding:28px 0; border-top:1px solid var(--line); }
+.experience:last-child { border-bottom:1px solid var(--line); }
+.experience-year { color:var(--orange); font-weight:700; }
+.experience h3 { margin:0 0 10px; font-size:24px; }
+.experience p { color:var(--muted); line-height:1.65; margin:0; }
+.contact { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
+.contact h2 { font-size:clamp(38px,5vw,62px); letter-spacing:-2px; margin:0 0 16px; }
+.contact p { color:var(--muted); line-height:1.65; }
+.contact-links { display:grid; gap:14px; }
+.contact-link { padding:18px; background:var(--card); border:1px solid var(--line); border-radius:6px; font-weight:600; }
+.contact-link small { display:block; color:var(--muted); font-size:12px; margin-bottom:5px; text-transform:uppercase; letter-spacing:1px; }
+.contact-link:hover { border-color:var(--green); color:var(--green); }
+.week-grid { display:grid; gap:22px; }
+.week-card { padding:26px; border:1px solid var(--line); border-radius:12px; background:var(--card); }
+.week-card-header { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:16px; }
+.week-card h3 { margin:0; color:var(--green); font-size:25px; }
+.week-card-label { color:var(--orange); font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase; }
+.week-update { width:100%; min-height:190px; padding:16px; border:1px solid var(--line); border-radius:7px; resize:vertical; outline:0; color:var(--ink); background:#fffefa; font:15px/1.65 'DM Sans',sans-serif; }
+.week-update:focus { border-color:var(--green); box-shadow:0 0 0 3px rgba(30,107,82,.1); }
+.image-heading { display:block; margin:22px 0 10px; color:var(--muted); font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase; }
+.image-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; }
+.image-slot { min-height:116px; position:relative; display:flex; align-items:center; justify-content:center; overflow:hidden; border:1px dashed #b9c5b7; border-radius:7px; background:#f3f5ed; color:var(--muted); text-align:center; }
+.image-slot span { padding:8px; font-size:12px; font-weight:600; }
+.image-slot input { position:absolute; inset:0; width:100%; height:100%; cursor:pointer; opacity:0; }
+.image-slot img { width:100%; height:100%; object-fit:cover; }
+.doc-button { display:inline-flex; margin-top:18px; padding:10px 14px; border-radius:4px; color:var(--green); background:var(--lime); font-size:12px; font-weight:700; text-align:center; white-space:nowrap; }
+.doc-button:hover { background:#c5dc51; }
+.document-upload { display:inline-flex; align-items:center; gap:10px; margin-top:18px; }
+.document-upload input { position:absolute; width:1px; height:1px; opacity:0; }
+.document-upload-name { color:var(--muted); font-size:12px; }
+footer { padding:28px 0; color:var(--muted); font-size:13px; border-top:1px solid var(--line); }
+@media (max-width:760px) { .container { width:min(100% - 28px, 560px); } .header-inner { min-height:64px; } .nav { gap:12px; font-size:12px; } .hero { padding:70px 0 75px; } .hero-grid,.about-grid,.contact { grid-template-columns:1fr; gap:44px; } .profile-frame { width:min(100%,240px); justify-self:center; } h1 { letter-spacing:-2.5px; } .hero-card { min-height:270px; box-shadow:10px 10px 0 var(--lime); } .section { padding:70px 0; } .projects { grid-template-columns:1fr; } .experience { grid-template-columns:1fr; gap:8px; } }
+@media (max-width:430px) { .logo { font-size:16px; } .header-inner { align-items:flex-start; padding:14px 0; } .nav { gap:8px 12px; flex-wrap:wrap; justify-content:flex-end; } }
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner"><a class="logo" href="#top">Santhosh<span>.</span></a><nav class="nav" aria-label="Main navigation"><a href="#about">About</a><a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#protosem">Protosem</a><a href="#contact">Contact</a></nav></div></header>
+<main id="top">
+<section class="hero"><div class="container hero-grid"><div><p class="kicker">Mechatronics Engineering Student</p><h1>Building a better feel for <em>how things work.</em></h1><p class="lede">I am Santhosh P, a mechanical enthusiast exploring the space where machines, fabrication, and digital systems come together.</p><div class="actions"><a class="button" href="#projects">View my work</a><a class="button secondary" href="#contact">Get in touch</a></div></div><aside class="hero-card"><h2>Curious hands.<br>Practical mind.</h2><div class="stat"><strong>AGV Project</strong>Mechanical Domain Developer</div><div class="stat"><strong>Currently learning</strong>CNC, Wire EDM, and precision manufacturing</div></aside></div></section>
+<section class="section" id="about"><div class="container"><div class="section-heading"><p class="kicker">01 / About</p><h2>Learning by making.</h2><p>My work starts with curiosity and gets better through hands-on practice.</p></div><div class="about-grid"><p class="copy">I am a Mechatronics Engineering student with a growing interest in mechanical design and digital systems. I enjoy picking up new tools quickly, sharpening my technical skills, and understanding how each part of a system fits together.</p><label class="profile-frame"><img id="profile-photo" src="../week2/photo/image.png" alt="Santhosh P profile photo"><input id="profile-photo-input" type="file" accept="image/*"><span class="profile-frame-label">Change profile photo</span></label><div class="skills"><span class="skill">Mechanical builds</span><span class="skill">AGV systems</span><span class="skill">3D printing</span></div></div></div></section>
+<section class="section" id="projects"><div class="container"><div class="section-heading"><p class="kicker">02 / Projects</p><h2>Work in progress, by design.</h2><p>Projects that have helped me move from theory into the workshop.</p></div><div class="projects"><article class="project featured"><div><span class="project-number">01</span><h3>Automated Guided Vehicle</h3><p>Mechanical structure and chassis development for a department AGV build, including fabrication, assembly, and system integration.</p></div><span class="project-tag">Ongoing project</span></article><article class="project"><div><span class="project-number">02</span><h3>Workshop exploration</h3><p>Building practical exposure through cutting, welding, 3D printing, and learning the fundamentals of precision manufacturing.</p></div><span class="project-tag">Learning track</span></article></div></div></section>
+<section class="section" id="experience"><div class="container"><div class="section-heading"><p class="kicker">03 / Experience</p><h2>Getting closer to the machine.</h2></div><div class="experience"><div class="experience-year">Present</div><div><h3>Mechanical Domain Developer</h3><p>AGV Project. Supporting chassis design, fabrication, assembly, and mechanical integration across the vehicle subsystems.</p></div></div><div class="experience"><div class="experience-year">Learning</div><div><h3>Manufacturing fundamentals</h3><p>Exploring CNC machine working principles, Wire EDM technology, and the fundamentals of 3D printing.</p></div></div></div></section>
+<section class="section" id="protosem"><div class="container"><div class="section-heading"><p class="kicker">04 / Protosem</p><h2>Weekly seminar log.</h2><p>Document your learning, experiments, and progress from Week 0 to Week 20. Add up to five photos for every week.</p></div><div class="week-grid" id="week-grid"></div></div></section>
+<section class="section" id="contact"><div class="container contact"><div><p class="kicker">05 / Contact</p><h2>Let us make something useful.</h2><p>I am always open to learning, collaborating, and talking about mechanical systems.</p></div><div class="contact-links"><a class="contact-link" href="mailto:santhosh.24mc@kct.ac.in"><small>Email</small>santhosh.24mc@kct.ac.in</a><a class="contact-link" href="tel:+918610590053"><small>Phone</small>+91 86105 90053</a><a class="contact-link" href="https://linkedin.com/in/santhosh-p-78013032a" target="_blank" rel="noreferrer"><small>LinkedIn</small>santhosh-p-78013032a</a><div class="contact-link"><small>Location</small>Kumaraguru College of Technology, Coimbatore</div></div></div></section>
+</main>
+<footer><div class="container">© 2026 Santhosh P. Built with curiosity and patience.</div></footer>
+<script>
+const starterUpdates = {
+	0: `1. Orientation Overview: Week 0 introduced the Protosem structure, including weekly tasks, assignments, and progress tracking up to Week 20, setting clear expectations for consistency and effort.\n\n2. Self-Assessment: Completed the 16Personalities test and identified as Consul (ESFJ-T), highlighting strengths in teamwork, responsibility, organization, and supporting others.\n\n3. Personal Introduction: Shared background as a Mechatronics Engineering student with interests in robotics, automation, and AI, along with expectations from the program.\n\n4. Team Interaction: Engaged in introductions with peers and mentors, helping to build initial connections and establish a collaborative environment for the semester.`,
+	1: `1. Day 1 - Component Testing & 5S Start:\nBegan with 5S activity and tested components like gas sensor, smoke sensor, IR sensor, ESP32, and Arduino using Arduino IDE to check functionality.\n\n2. Day 2 - Classification of Components:\nIdentified working and non-working components and separated them systematically with the team for easier usage and troubleshooting.\n\n3. Day 3 - Organization & Storage:\nArranged and consolidated all components into labeled boxes, ensuring a clean, accessible, and well-structured workspace.\n\n4. Day 4 & 5 - Portfolio Development:\nCreated and organized a professional portfolio including academic details, technical skills, and project work.\n\n5. Key Learning Outcome:\nGained knowledge in 5S workplace organization, teamwork, component testing, and the importance of professional self-presentation.`,
+	2: `1. Day 1 - Innovation Session:\nAttended a keynote session on "The Liberal Arts of Innovation", which explained how constraints drive innovation and the importance of interdisciplinary thinking in solving real-world problems.\n\n2. Day 2 - Algorithmic Thinking:\nLearned "Think Like a Coder" concepts, including loops and decision-making, and created a flowchart algorithm for preparing Podi Dosa.\n\n3. Day 3 - Scratch to Python:\nDeveloped animations using Scratch and then transitioned to Python programming, learning data types, list operations, and functions.\n\n4. Day 4 - App Development:\nBuilt a no-code Android application using MIT App Inventor to organize educational notes in a structured format.\n\n5. Day 5 - Design Thinking:\nLearned the design thinking process (Empathize, Ideate, Prototype, Test) and applied it by creating problem statements and building simple prototypes.`
+};
+const savedNotes = JSON.parse(localStorage.getItem('santhosh-protosem-notes') || '{}');
+const savedImages = JSON.parse(localStorage.getItem('santhosh-protosem-images') || '{}');
+const savedDocuments = JSON.parse(localStorage.getItem('santhosh-protosem-documents') || '{}');
+const profilePhoto = document.getElementById('profile-photo');
+const profilePhotoInput = document.getElementById('profile-photo-input');
+const savedProfilePhoto = localStorage.getItem('santhosh-profile-photo');
+if (savedProfilePhoto) {
+	profilePhoto.src = savedProfilePhoto;
+}
+profilePhotoInput.addEventListener('change', () => {
+	const file = profilePhotoInput.files[0];
+	if (!file) return;
+	const reader = new FileReader();
+	reader.addEventListener('load', () => {
+		profilePhoto.src = reader.result;
+		localStorage.setItem('santhosh-profile-photo', reader.result);
+	});
+	reader.readAsDataURL(file);
+});
+const week0Images = [
+	'../week0/week 01.png',
+	'../week0/week 02.png',
+	'../week0/week 03.png',
+	'../week0/week 04.png',
+	'../week0/week 05.png'
+];
+const week1Images = [
+	'../week 1/1.png',
+	'../week 1/2.png',
+	'../week 1/3.png',
+	'../week 1/4.png',
+	'../week 1/5.png'
+];
+const week2Images = [
+	'../week2/1.png',
+	'../week2/2.png',
+	'../week2/3.png',
+	'../week2/4.png',
+	'../week2/5.png'
+];
+const weekGrid = document.getElementById('week-grid');
+for (let week = 0; week <= 20; week += 1) {
+	const card = document.createElement('article');
+	card.className = 'week-card';
+	card.innerHTML = `<div class="week-card-header"><h3>Week ${week}</h3><span class="week-card-label">Protosem update</span></div>`;
+	const textarea = document.createElement('textarea');
+	textarea.className = 'week-update';
+	textarea.placeholder = 'Write your weekly update, key activities, and learning outcomes...';
+	textarea.value = savedNotes[week] || starterUpdates[week] || '';
+	textarea.addEventListener('input', () => {
+		savedNotes[week] = textarea.value;
+		localStorage.setItem('santhosh-protosem-notes', JSON.stringify(savedNotes));
+	});
+	card.appendChild(textarea);
+	const imageHeading = document.createElement('span');
+	imageHeading.className = 'image-heading';
+	imageHeading.textContent = 'Add up to 5 photos';
+	card.appendChild(imageHeading);
+	const imageGrid = document.createElement('div');
+	imageGrid.className = 'image-grid';
+	for (let image = 1; image <= 5; image += 1) {
+		const slot = document.createElement('label');
+		slot.className = 'image-slot';
+		slot.innerHTML = `<span>Week ${week} photo ${image}<br>Choose image</span>`;
+		const savedImage = savedImages[`${week}-${image}`];
+		const defaultImage = week === 0 ? week0Images[image - 1] : week === 1 ? week1Images[image - 1] : week === 2 ? week2Images[image - 1] : '';
+		if (savedImage || defaultImage) {
+			slot.querySelector('span').remove();
+			const preview = document.createElement('img');
+			preview.src = savedImage || defaultImage;
+			preview.alt = `Week ${week}, photo ${image}`;
+			slot.prepend(preview);
+		}
+		const input = document.createElement('input');
+		input.type = 'file';
+		input.accept = 'image/*';
+		input.addEventListener('change', () => {
+			const file = input.files[0];
+			if (!file) return;
+			const reader = new FileReader();
+			reader.addEventListener('load', () => {
+				savedImages[`${week}-${image}`] = reader.result;
+				localStorage.setItem('santhosh-protosem-images', JSON.stringify(savedImages));
+				slot.querySelector('span').remove();
+				const preview = document.createElement('img');
+				preview.src = reader.result;
+				preview.alt = `Week ${week}, photo ${image}`;
+				slot.prepend(preview);
+			});
+			reader.readAsDataURL(file);
+		});
+		slot.appendChild(input);
+		imageGrid.appendChild(slot);
+	}
+	card.appendChild(imageGrid);
+	const documentUpload = document.createElement('label');
+	documentUpload.className = 'document-upload';
+	if (week === 0) {
+		const documentLink = document.createElement('a');
+		documentLink.className = 'doc-button';
+		documentLink.href = 'weekly assingnment/Untitleddocument.html';
+		documentLink.target = '_blank';
+		documentLink.rel = 'noreferrer';
+		documentLink.textContent = 'Open Week 0 document';
+		documentLink.setAttribute('aria-label', 'Open Week 0 document');
+		documentUpload.appendChild(documentLink);
+		card.appendChild(documentUpload);
+		weekGrid.appendChild(card);
+		continue;
+	}
+	const documentInput = document.createElement('input');
+	documentInput.type = 'file';
+	documentInput.accept = '.doc,.docx,.pdf,.txt,.odt';
+	const documentButton = document.createElement('span');
+	documentButton.className = 'doc-button';
+	documentButton.textContent = 'Upload existing document';
+	documentButton.setAttribute('aria-label', `Upload existing document for Week ${week}`);
+	const documentName = document.createElement('span');
+	documentName.className = 'document-upload-name';
+	documentName.textContent = savedDocuments[week] || 'No document selected';
+	documentInput.addEventListener('change', () => {
+		const file = documentInput.files[0];
+		if (!file) return;
+		savedDocuments[week] = file.name;
+		localStorage.setItem('santhosh-protosem-documents', JSON.stringify(savedDocuments));
+		documentName.textContent = file.name;
+	});
+	documentUpload.append(documentButton, documentInput, documentName);
+	card.appendChild(documentUpload);
+	weekGrid.appendChild(card);
+}
+</script>
+</body>
+</html>

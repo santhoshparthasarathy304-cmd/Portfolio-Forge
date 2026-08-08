@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Santhosh P &mdash; Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --clay: #C98A5B;
+    --clay-dark: #8A5A2F;
+    --ink: #3B3A36;
+    --ink-soft: #514F49;
+    --ink-muted: #8B8A82;
+    --sky-1: #EAF1F8;
+    --sky-2: #F7EFE3;
+    --paper: #FFFBF4;
+    --tan: #F1E6D6;
+    --tan-border: #EDE2D0;
+    --steel: #5B6672;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--sky-1);
+    overflow: hidden;
+  }
+  #app { position: relative; width: 100%; height: 100vh; min-height: 560px; overflow: hidden; }
+  #canvas-host { position: absolute; inset: 0; }
+  #canvas-host canvas { display: block; }
+
+  #load-screen {
+    position: absolute; inset: 0; z-index: 50;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: linear-gradient(160deg, var(--sky-1) 0%, var(--sky-2) 100%);
+    gap: 18px;
+    transition: opacity 0.35s ease;
+  }
+  #load-screen.hidden { opacity: 0; pointer-events: none; }
+  .load-bot {
+    width: 40px; height: 40px; border-radius: 10px; background: #8FA2B3;
+    box-shadow: 0 0 0 4px rgba(201,138,91,0.25);
+    animation: loadPulse 1.1s ease-in-out infinite;
+  }
+  @keyframes loadPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+  .load-title {
+    font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600;
+    color: var(--ink); letter-spacing: 0.2px;
+  }
+  .load-bar-track { width: 200px; height: 6px; border-radius: 4px; background: #DFE6EC; overflow: hidden; }
+  .load-bar-fill { height: 100%; width: 0%; background: var(--clay); transition: width 0.15s linear; }
+
+  #top-bar {
+    position: absolute; top: 0; left: 0; right: 0; z-index: 20;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px; flex-wrap: wrap; gap: 10px; pointer-events: none;
+  }
+  .brand {
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 17px; color: var(--ink);
+    display: flex; align-items: center; gap: 8px; pointer-events: auto;
+    background: rgba(255,250,242,0.85); padding: 8px 14px; border-radius: 999px;
+    box-shadow: 0 2px 10px rgba(60,50,30,0.08);
+  }
+  .brand-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--clay); display: inline-block; }
+  #nav {
+    display: flex; gap: 6px; background: rgba(255,250,242,0.85); padding: 6px; border-radius: 999px;
+    box-shadow: 0 2px 10px rgba(60,50,30,0.08); pointer-events: auto; flex-wrap: wrap;
+  }
+  .nav-btn {
+    font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600; color: var(--steel);
+    background: transparent; border: none; padding: 8px 14px; border-radius: 999px; cursor: pointer;
+    transition: all 0.18s ease;
+  }
+  .nav-btn.active { background: var(--clay); color: #FFF9F0; }
+  .nav-btn:hover:not(.active) { background: rgba(0,0,0,0.05); }
+
+  #hint {
+    position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%);
+    font-size: 12px; color: var(--steel); background: rgba(255,250,242,0.8);
+    padding: 6px 14px; border-radius: 999px; z-index: 10; letter-spacing: 0.2px;
+    transition: opacity 0.2s ease;
+  }
+  #hint.hidden { opacity: 0; pointer-events: none; }
+
+  #panel-backdrop {
+    position: absolute; inset: 0; z-index: 30; background: rgba(59,58,54,0.28);
+    display: none; justify-content: flex-end; backdrop-filter: blur(2px);
+  }
+  #panel-backdrop.open { display: flex; }
+  #panel {
+    width: min(420px, 92vw); height: 100%; background: var(--paper);
+    box-shadow: -8px 0 30px rgba(60,50,30,0.15); padding: 56px 28px 32px;
+    overflow-y: auto; position: relative;
+  }
+  #panel.wide { width: min(920px, 96vw); }
+  #panel::-webkit-scrollbar { width: 6px; }
+  #panel::-webkit-scrollbar-thumb { background: #d8c3a5; border-radius: 4px; }
+
+  .close-btn {
+    position: absolute; top: 16px; right: 16px; width: 34px; height: 34px; border-radius: 50%;
+    border: none; background: var(--tan); color: var(--ink); font-size: 20px; line-height: 34px;
+    cursor: pointer; text-align: center;
+  }
+  .eyebrow {
+    font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 600;
+    letter-spacing: 1.5px; text-transform: uppercase; color: var(--clay); margin-bottom: 6px;
+  }
+  .h2 { font-family: 'Space Grotesk', sans-serif; font-size: 25px; font-weight: 700; color: var(--ink); margin: 0 0 14px; line-height: 1.25; }
+  .h3 { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: var(--ink); margin: 22px 0 8px; }
+  .p { font-size: 14.5px; line-height: 1.7; color: var(--ink-soft); margin: 0 0 12px; }
+  .p-muted { font-size: 13.5px; line-height: 1.6; color: var(--ink-muted); margin: 0 0 16px; }
+  ul.list { margin: 0 0 8px; padding-left: 20px; color: var(--ink-soft); font-size: 14px; line-height: 1.8; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 18px; }
+  .chip { font-size: 12.5px; font-weight: 500; color: var(--steel); background: #EDF2F6; padding: 6px 12px; border-radius: 999px; }
+  .project-card { margin-top: 16px; padding: 16px; border-radius: 14px; background: var(--tan); position: relative; }
+  .project-badge {
+    display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+    color: var(--clay-dark); background: var(--paper); padding: 3px 10px; border-radius: 999px; margin-bottom: 10px;
+  }
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: block; font-size: 12px; font-weight: 600; color: var(--ink-muted); margin-bottom: 5px;
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .field input {
+    width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--tan-border);
+    background: #fff; font-size: 14px; color: var(--ink); outline: none; font-family: 'Inter', sans-serif;
+  }
+  .field input:focus { border-color: var(--clay); }
+
+  .table-wrap { overflow-x: auto; border-radius: 14px; border: 1px solid var(--tan-border); }
+  table.protosem-table { border-collapse: collapse; width: max-content; }
+  table.protosem-table th {
+    font-family: 'Space Grotesk', sans-serif; font-size: 12.5px; font-weight: 600; color: var(--clay-dark);
+    background: var(--tan); padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--tan-border);
+    border-right: 1px solid var(--tan-border); white-space: nowrap;
+  }
+  table.protosem-table td { border-right: 1px solid var(--tan-border); vertical-align: top; padding: 0; }
+  table.protosem-table textarea {
+    width: 150px; height: 110px; border: none; resize: none; padding: 10px 12px; font-size: 13px;
+    color: var(--ink); background: transparent; outline: none; font-family: 'Inter', sans-serif;
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="canvas-host"></div>
+
+  <div id="load-screen">
+    <div class="load-bot"></div>
+    <div class="load-title">Booting up Santhosh&rsquo;s workshop</div>
+    <div class="load-bar-track"><div class="load-bar-fill" id="load-bar-fill"></div></div>
+  </div>
+
+  <div id="top-bar">
+    <div class="brand"><span class="brand-dot"></span>Santhosh P</div>
+    <nav id="nav"></nav>
+  </div>
+
+  <div id="hint">Click a floating signboard, or drag to look around</div>
+
+  <div id="panel-backdrop">
+    <div id="panel">
+      <button class="close-btn" id="close-btn" aria-label="Close">&times;</button>
+      <div id="panel-content"></div>
+    </div>
+  </div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from "three";
+
+/* ---------- content data (edit these to personalize) ---------- */
+const CONTACT_DEFAULT = {
+  email: "santhosh.24mc@kct.ac.in",
+  phone: "+91 86105 90053",
+  linkedin: "linkedin.com/in/santhosh-p-78013032a",
+  location: "Kumaraguru College of Technology, Coimbatore",
+};
+
+const SECTIONS = [
+  { id: "about", label: "About", icon: "\u25C8" },
+  { id: "projects", label: "Projects", icon: "\u25A6" },
+  { id: "experience", label: "Experience", icon: "\u2699" },
+  { id: "protosem", label: "Protosem", icon: "\u25A4" },
+  { id: "contact", label: "Contact", icon: "\u2709" },
+];
+
+const SIGN_RADIUS = 6.4;
+const SIGN_HEIGHT = 2.6;
+const WEEKS = Array.from({ length: 21 }, (_, i) => i);
+
+const weekNotes = WEEKS.map(() => "");
+let contact = { ...CONTACT_DEFAULT };
+
+function deg(d) { return (d * Math.PI) / 180; }
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+function makeLabelTexture(text) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 512;
+  canvas.height = 160;
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "rgba(255,250,242,0.96)";
+  roundRect(ctx, 8, 8, canvas.width - 16, canvas.height - 16, 28);
+  ctx.fill();
+  ctx.strokeStyle = "#C98A5B";
+  ctx.lineWidth = 5;
+  roundRect(ctx, 8, 8, canvas.width - 16, canvas.height - 16, 28);
+  ctx.stroke();
+  ctx.fillStyle = "#3B3A36";
+  ctx.font = "600 62px 'Space Grotesk', 'Segoe UI', sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(text.toUpperCase(), canvas.width / 2, canvas.height / 2 + 4);
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.needsUpdate = true;
+  return tex;
+}
+
+/* ---------- panel content templates ---------- */
+function aboutHTML() {
+  return `
+    <div class="eyebrow">About</div>
+    <h2 class="h2">Hands learning the machine, one build at a time</h2>
+    <p class="p">I&rsquo;m a Mechatronics Engineering student, still at a beginner level in design and
+    programming, but genuinely curious about how mechanical and digital systems come
+    together. I enjoy picking up new tools quickly and I&rsquo;m constantly trying to
+    sharpen my technical skills.</p>
+    <p class="p">I&rsquo;m a mechanical enthusiast at heart and currently exploring 3D printing on the
+    side. On the workshop floor I have basic hands-on experience with cutting and welding,
+    and I&rsquo;m working as a Mechanical Domain Developer on an AGV project.</p>
+    <div class="chip-row">
+      ${["Cutting", "Welding", "AGV mechanical builds", "3D printing (exploring)"].map((c) => `<span class="chip">${c}</span>`).join("")}
+    </div>
+    <h3 class="h3">Currently learning</h3>
+    <ul class="list">
+      <li>CNC machine working principles</li>
+      <li>Wire EDM (Molybdenum type)</li>
+      <li>High-precision manufacturing systems</li>
+    </ul>
+  `;
+}
+
+function projectsHTML() {
+  return `
+    <div class="eyebrow">Projects</div>
+    <h2 class="h2">AGV Project</h2>
+    <p class="p-muted">Mechanical Domain Developer</p>
+    <ul class="list">
+      <li>Worked on the mechanical structure and chassis of the AGV</li>
+      <li>Involved in fabrication and assembly of chassis components</li>
+      <li>Learned how mechanical components integrate into the full system</li>
+    </ul>
+    <div class="project-card">
+      <div class="project-badge">Ongoing</div>
+      <p class="p">A department-assigned AGV (Automated Guided Vehicle) build, focused on the mechanical
+      side, chassis design support, fabrication, and getting hands-on with how the
+      mechanical, electrical, and software domains come together in one machine.</p>
+    </div>
+  `;
+}
+
+function experienceHTML() {
+  return `
+    <div class="eyebrow">Experience</div>
+    <h2 class="h2">Mechanical Domain Developer &mdash; AGV Project</h2>
+    <ul class="list">
+      <li>Chassis design support</li>
+      <li>Fabrication exposure: cutting and welding</li>
+      <li>Mechanical integration basics across sub-systems</li>
+    </ul>
+    <h3 class="h3">Learning exposure</h3>
+    <ul class="list">
+      <li>CNC machines &mdash; basic working principles</li>
+      <li>Wire EDM (Molybdenum type)</li>
+      <li>3D printing fundamentals</li>
+    </ul>
+  `;
+}
+
+function contactHTML() {
+  return `
+    <div class="eyebrow">Contact</div>
+    <h2 class="h2">Let&rsquo;s talk</h2>
+    <p class="p-muted">These fields are editable &mdash; update them with your own details.</p>
+    <div class="field"><label>Email</label><input id="c-email" value="${contact.email}" /></div>
+    <div class="field"><label>Phone</label><input id="c-phone" value="${contact.phone}" /></div>
+    <div class="field"><label>LinkedIn</label><input id="c-linkedin" value="${contact.linkedin}" /></div>
+    <div class="field"><label>Location</label><input id="c-location" value="${contact.location}" /></div>
+  `;
+}
+
+function protosemHTML() {
+  const heads = WEEKS.map((w) => `<th>Week ${w}</th>`).join("");
+  const cells = WEEKS.map(
+    (w) => `<td><textarea data-week="${w}" placeholder="Add Week ${w} update...">${weekNotes[w]}</textarea></td>`
+  ).join("");
+  return `
+    <div class="eyebrow">Protosem</div>
+    <h2 class="h2">Weekly seminar log</h2>
+    <p class="p-muted">Week 0 to Week 20 &mdash; click any cell and type to add that week&rsquo;s update.</p>
+    <div class="table-wrap">
+      <table class="protosem-table">
+        <thead><tr>${heads}</tr></thead>
+        <tbody><tr>${cells}</tr></tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderPanel(id) {
+  const content = document.getElementById("panel-content");
+  const panel = document.getElementById("panel");
+  panel.classList.toggle("wide", id === "protosem");
+  if (id === "about") content.innerHTML = aboutHTML();
+  else if (id === "projects") content.innerHTML = projectsHTML();
+  else if (id === "experience") content.innerHTML = experienceHTML();
+  else if (id === "contact") {
+    content.innerHTML = contactHTML();
+    ["email", "phone", "linkedin", "location"].forEach((key) => {
+      document.getElementById("c-" + key).addEventListener("input", (e) => {
+        contact[key] = e.target.value;
+      });
+    });
+  } else if (id === "protosem") {
+    content.innerHTML = protosemHTML();
+    content.querySelectorAll("textarea[data-week]").forEach((ta) => {
+      ta.addEventListener("input", (e) => {
+        weekNotes[Number(e.target.dataset.week)] = e.target.value;
+      });
+    });
+  }
+}
+
+/* ---------- nav + panel wiring ---------- */
+let activeSection = null;
+const navEl = document.getElementById("nav");
+const backdrop = document.getElementById("panel-backdrop");
+const hintEl = document.getElementById("hint");
+
+function buildNav() {
+  SECTIONS.forEach((s) => {
+    const btn = document.createElement("button");
+    btn.className = "nav-btn";
+    btn.dataset.id = s.id;
+    btn.innerHTML = `<span style="margin-right:6px">${s.icon}</span>${s.label}`;
+    btn.addEventListener("click", () => setActive(activeSection === s.id ? null : s.id));
+    navEl.appendChild(btn);
+  });
+}
+buildNav();
+
+function setActive(id) {
+  activeSection = id;
+  document.querySelectorAll(".nav-btn").forEach((b) => {
+    b.classList.toggle("active", b.dataset.id === id);
+  });
+  if (id) {
+    renderPanel(id);
+    backdrop.classList.add("open");
+    hintEl.classList.add("hidden");
+  } else {
+    backdrop.classList.remove("open");
+    hintEl.classList.remove("hidden");
+  }
+}
+
+document.getElementById("close-btn").addEventListener("click", () => setActive(null));
+backdrop.addEventListener("click", (e) => {
+  if (e.target === backdrop) setActive(null);
+});
+
+/* ---------- loading screen ---------- */
+const loadScreen = document.getElementById("load-screen");
+const loadBarFill = document.getElementById("load-bar-fill");
+(function runLoader() {
+  const t0 = performance.now();
+  function tick() {
+    const p = Math.min(1, (performance.now() - t0) / 1100);
+    loadBarFill.style.width = Math.round(p * 100) + "%";
+    if (p < 1) requestAnimationFrame(tick);
+    else setTimeout(() => loadScreen.classList.add("hidden"), 220);
+  }
+  requestAnimationFrame(tick);
+})();
+
+/* ---------- three.js scene ---------- */
+const mount = document.getElementById("canvas-host");
+
+const scene = new THREE.Scene();
+const skyColor = new THREE.Color("#EAF1F8");
+scene.background = skyColor;
+scene.fog = new THREE.Fog(skyColor.getHex(), 14, 30);
+
+const camera = new THREE.PerspectiveCamera(45, mount.clientWidth / mount.clientHeight, 0.1, 100);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(mount.clientWidth, mount.clientHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+mount.appendChild(renderer.domElement);
+
+const hemi = new THREE.HemisphereLight(0xfff3e6, 0xbcd6c9, 0.9);
+scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xfff0dc, 1.05);
+sun.position.set(6, 9, 4);
+sun.castShadow = true;
+sun.shadow.mapSize.set(1024, 1024);
+sun.shadow.camera.left = -8;
+sun.shadow.camera.right = 8;
+sun.shadow.camera.top = 8;
+sun.shadow.camera.bottom = -8;
+scene.add(sun);
+const fillLight = new THREE.PointLight(0xffd9b0, 0.35, 20);
+fillLight.position.set(-5, 4, -4);
+scene.add(fillLight);
+
+const world = new THREE.Group();
+scene.add(world);
+
+const matClay = new THREE.MeshStandardMaterial({ color: 0xd9b48f, roughness: 0.95, flatShading: true });
+const matGrass = new THREE.MeshStandardMaterial({ color: 0xb7dcb0, roughness: 0.9, flatShading: true });
+const matGrassEdge = new THREE.MeshStandardMaterial({ color: 0x9fcd9a, roughness: 0.9, flatShading: true });
+const matSteel = new THREE.MeshStandardMaterial({ color: 0x8fa2b3, roughness: 0.35, metalness: 0.55 });
+const matSteelDark = new THREE.MeshStandardMaterial({ color: 0x63788b, roughness: 0.4, metalness: 0.5 });
+const matCream = new THREE.MeshStandardMaterial({ color: 0xf6ede0, roughness: 0.6 });
+const matAccent = new THREE.MeshStandardMaterial({ color: 0xe8a87c, roughness: 0.5, emissive: 0xe8a87c, emissiveIntensity: 0.15 });
+const matLeaf = new THREE.MeshStandardMaterial({ color: 0x8fbf8a, roughness: 0.85, flatShading: true });
+const matTrunk = new THREE.MeshStandardMaterial({ color: 0xa9825c, roughness: 0.9 });
+const matWood = new THREE.MeshStandardMaterial({ color: 0xc98a5b, roughness: 0.8 });
+
+/* island */
+const island = new THREE.Group();
+const rock = new THREE.Mesh(new THREE.CylinderGeometry(2.5, 1.7, 1.3, 9, 1), matClay);
+rock.position.y = -0.65;
+rock.castShadow = true;
+rock.receiveShadow = true;
+island.add(rock);
+const grassCap = new THREE.Mesh(new THREE.CylinderGeometry(2.62, 2.55, 0.28, 9), matGrass);
+grassCap.position.y = 0.14;
+grassCap.receiveShadow = true;
+grassCap.castShadow = true;
+island.add(grassCap);
+const grassEdge = new THREE.Mesh(new THREE.TorusGeometry(2.58, 0.08, 6, 9), matGrassEdge);
+grassEdge.rotation.x = Math.PI / 2;
+grassEdge.position.y = 0.28;
+island.add(grassEdge);
+for (let i = 0; i < 6; i++) {
+  const pebble = new THREE.Mesh(new THREE.IcosahedronGeometry(0.08 + Math.random() * 0.06, 0), matClay);
+  const a = Math.random() * Math.PI * 2;
+  const r = 1.9 + Math.random() * 0.5;
+  pebble.position.set(Math.cos(a) * r, -0.15, Math.sin(a) * r);
+  pebble.castShadow = true;
+  island.add(pebble);
+}
+world.add(island);
+
+/* glow disc under island */
+const glowCanvas = document.createElement("canvas");
+glowCanvas.width = 128;
+glowCanvas.height = 128;
+const gctx = glowCanvas.getContext("2d");
+const grad = gctx.createRadialGradient(64, 64, 4, 64, 64, 64);
+grad.addColorStop(0, "rgba(180,160,220,0.35)");
+grad.addColorStop(1, "rgba(180,160,220,0)");
+gctx.fillStyle = grad;
+gctx.fillRect(0, 0, 128, 128);
+const glowTex = new THREE.CanvasTexture(glowCanvas);
+const glowDisc = new THREE.Mesh(
+  new THREE.CircleGeometry(3.6, 24),
+  new THREE.MeshBasicMaterial({ map: glowTex, transparent: true, depthWrite: false })
+);
+glowDisc.rotation.x = -Math.PI / 2;
+glowDisc.position.y = -2.6;
+world.add(glowDisc);
+
+/* clouds */
+function makeCloud(x, y, z, s) {
+  const g = new THREE.Group();
+  const cm = new THREE.MeshStandardMaterial({ color: 0xffffff, transparent: true, opacity: 0.55, roughness: 1 });
+  [[0, 0, 0, 0.5], [0.35, 0.05, 0.1, 0.38], [-0.35, 0.02, -0.1, 0.4]].forEach(([dx, dy, dz, r]) => {
+    const puff = new THREE.Mesh(new THREE.IcosahedronGeometry(r, 0), cm);
+    puff.position.set(dx, dy, dz);
+    g.add(puff);
+  });
+  g.position.set(x, y, z);
+  g.scale.setScalar(s);
+  return g;
+}
+const clouds = [makeCloud(-4.5, -1.8, 2.5, 1), makeCloud(4.6, -2.2, -1.8, 0.8), makeCloud(0.5, -2.6, 4, 0.9)];
+clouds.forEach((c) => world.add(c));
+
+/* robot centerpiece */
+const robot = new THREE.Group();
+const rBody = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.72, 0.42), matSteel);
+rBody.position.y = 0.75;
+rBody.castShadow = true;
+robot.add(rBody);
+const rBelt = new THREE.Mesh(new THREE.BoxGeometry(0.66, 0.08, 0.46), matAccent);
+rBelt.position.y = 0.5;
+robot.add(rBelt);
+const rHead = new THREE.Mesh(new THREE.SphereGeometry(0.26, 16, 16), matCream);
+rHead.position.y = 1.28;
+rHead.castShadow = true;
+robot.add(rHead);
+const eyeGeo = new THREE.SphereGeometry(0.045, 8, 8);
+const eyeMat = new THREE.MeshStandardMaterial({ color: 0x3b3a36, emissive: 0x6fa8d6, emissiveIntensity: 0.5 });
+const eyeL = new THREE.Mesh(eyeGeo, eyeMat);
+eyeL.position.set(-0.09, 1.3, 0.23);
+const eyeR = eyeL.clone();
+eyeR.position.x = 0.09;
+robot.add(eyeL, eyeR);
+const antenna = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.24, 6), matSteelDark);
+antenna.position.set(0, 1.62, 0);
+robot.add(antenna);
+const antennaTip = new THREE.Mesh(new THREE.SphereGeometry(0.045, 8, 8), matAccent);
+antennaTip.position.set(0, 1.75, 0);
+robot.add(antennaTip);
+const armGeo = new THREE.CylinderGeometry(0.05, 0.05, 0.5, 8);
+const armL = new THREE.Mesh(armGeo, matSteelDark);
+armL.position.set(-0.38, 0.85, 0);
+armL.rotation.z = deg(18);
+armL.castShadow = true;
+robot.add(armL);
+const armR = new THREE.Mesh(armGeo, matSteelDark);
+armR.position.set(0.38, 0.85, 0);
+armR.rotation.z = deg(-18);
+armR.castShadow = true;
+robot.add(armR);
+const legGeo = new THREE.CylinderGeometry(0.07, 0.07, 0.3, 8);
+const legL = new THREE.Mesh(legGeo, matSteelDark);
+legL.position.set(-0.17, 0.24, 0);
+const legR = legL.clone();
+legR.position.x = 0.17;
+robot.add(legL, legR);
+robot.position.set(0.1, 0.3, 0.3);
+world.add(robot);
+
+/* plants */
+function makePlant(x, z, scale) {
+  const g = new THREE.Group();
+  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.05, 0.32, 6), matTrunk);
+  trunk.position.y = 0.16;
+  trunk.castShadow = true;
+  g.add(trunk);
+  for (let i = 0; i < 3; i++) {
+    const leaf = new THREE.Mesh(new THREE.ConeGeometry(0.28 - i * 0.06, 0.34, 7), matLeaf);
+    leaf.position.y = 0.4 + i * 0.24;
+    leaf.castShadow = true;
+    g.add(leaf);
+  }
+  g.position.set(x, 0.28, z);
+  g.scale.setScalar(scale);
+  return g;
+}
+world.add(makePlant(-1.5, 1.2, 1));
+world.add(makePlant(-1.9, 0.5, 0.75));
+world.add(makePlant(1.6, -1.1, 0.9));
+
+/* gear decoration */
+function makeGearDeco(x, z) {
+  const g = new THREE.Group();
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(0.22, 0.06, 8, 10), matSteel);
+  g.add(ring);
+  for (let i = 0; i < 8; i++) {
+    const tooth = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.07, 0.09), matSteel);
+    const a = (i / 8) * Math.PI * 2;
+    tooth.position.set(Math.cos(a) * 0.24, Math.sin(a) * 0.24, 0);
+    tooth.rotation.z = a;
+    g.add(tooth);
+  }
+  g.position.set(x, 0.34, z);
+  g.rotation.x = Math.PI / 2;
+  return g;
+}
+const gearDeco = makeGearDeco(1.7, 1.4);
+world.add(gearDeco);
+
+/* toolbox */
+function makeToolbox(x, z) {
+  const g = new THREE.Group();
+  const box = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.24, 0.26), matAccent);
+  box.position.y = 0.14;
+  box.castShadow = true;
+  g.add(box);
+  const handle = new THREE.Mesh(new THREE.TorusGeometry(0.12, 0.018, 6, 8, Math.PI), matSteelDark);
+  handle.position.y = 0.28;
+  handle.rotation.x = Math.PI / 2;
+  g.add(handle);
+  g.position.set(x, 0.28, z);
+  return g;
+}
+world.add(makeToolbox(-1.3, -1.4));
+
+/* wrench */
+function makeWrench(x, z) {
+  const wrench = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.06, 0.08), matSteelDark);
+  wrench.position.set(x, 0.32, z);
+  wrench.rotation.y = deg(35);
+  wrench.rotation.z = deg(10);
+  wrench.castShadow = true;
+  return wrench;
+}
+world.add(makeWrench(0.4, -1.9));
+
+/* signboards */
+const signGroup = new THREE.Group();
+const signMeshes = [];
+SECTIONS.forEach((sec, i) => {
+  const angle = (i / SECTIONS.length) * Math.PI * 2;
+  const x = Math.cos(angle) * SIGN_RADIUS;
+  const z = Math.sin(angle) * SIGN_RADIUS;
+  const g = new THREE.Group();
+  const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.045, SIGN_HEIGHT, 7), matWood);
+  pole.position.y = SIGN_HEIGHT / 2 - 0.5;
+  pole.castShadow = true;
+  g.add(pole);
+  const tex = makeLabelTexture(sec.label);
+  const plane = new THREE.Mesh(
+    new THREE.PlaneGeometry(1.15, 0.36),
+    new THREE.MeshStandardMaterial({ map: tex, transparent: true, roughness: 0.6, side: THREE.DoubleSide })
+  );
+  plane.position.y = SIGN_HEIGHT - 0.55;
+  plane.castShadow = true;
+  plane.userData.sectionId = sec.id;
+  g.add(plane);
+  const knob = new THREE.Mesh(new THREE.IcosahedronGeometry(0.09, 0), matAccent);
+  knob.position.y = SIGN_HEIGHT - 0.9;
+  g.add(knob);
+  g.position.set(x, 0.28, z);
+  g.lookAt(0, plane.position.y + 0.28, 0);
+  g.userData.baseY = 0.28;
+  g.userData.phase = i * 1.3;
+  g.userData.sectionId = sec.id;
+  signGroup.add(g);
+  signMeshes.push(plane);
+});
+world.add(signGroup);
+
+/* raycasting + interaction */
+const raycaster = new THREE.Raycaster();
+const mouseNDC = new THREE.Vector2(999, 999);
+let hovered = null;
+
+function setHover(mesh) {
+  if (hovered === mesh) return;
+  if (hovered) hovered.parent.scale.setScalar(1);
+  hovered = mesh;
+  if (hovered) {
+    hovered.parent.scale.setScalar(1.12);
+    renderer.domElement.style.cursor = "pointer";
+  } else {
+    renderer.domElement.style.cursor = "default";
+  }
+}
+
+const dragState = { dragging: false, lastX: 0, manualAngle: 0 };
+
+function onPointerMove(e) {
+  const rect = renderer.domElement.getBoundingClientRect();
+  mouseNDC.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+  mouseNDC.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+  if (dragState.dragging) {
+    const dx = e.clientX - dragState.lastX;
+    dragState.lastX = e.clientX;
+    dragState.manualAngle += dx * 0.005;
+  }
+}
+function onPointerDown(e) {
+  const rect = renderer.domElement.getBoundingClientRect();
+  const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+  const y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+  raycaster.setFromCamera(new THREE.Vector2(x, y), camera);
+  const hits = raycaster.intersectObjects(signMeshes, false);
+  if (hits.length) {
+    const id = hits[0].object.userData.sectionId;
+    setActive(activeSection === id ? null : id);
+    return;
+  }
+  dragState.dragging = true;
+  dragState.lastX = e.clientX;
+}
+function onPointerUp() { dragState.dragging = false; }
+
+renderer.domElement.addEventListener("pointermove", onPointerMove);
+renderer.domElement.addEventListener("pointerdown", onPointerDown);
+window.addEventListener("pointerup", onPointerUp);
+
+/* camera rig */
+const camPos = new THREE.Vector3(0, 6, 11);
+const camLook = new THREE.Vector3(0, 1.1, 0);
+camera.position.copy(camPos);
+
+const clock = new THREE.Clock();
+
+function computeTarget(t) {
+  const id = activeSection;
+  if (!id) {
+    const angle = t * 0.09 + dragState.manualAngle;
+    const R = window.innerWidth < 640 ? 13.5 : 11;
+    const pos = new THREE.Vector3(Math.cos(angle) * R, 6 + Math.sin(t * 0.3) * 0.25, Math.sin(angle) * R);
+    const look = new THREE.Vector3(0, 1.1, 0);
+    return { pos, look };
+  }
+  const idx = SECTIONS.findIndex((s) => s.id === id);
+  const angle = (idx / SECTIONS.length) * Math.PI * 2;
+  const bob = Math.sin(t * 1.4 + idx * 1.3) * 0.05;
+  const signX = Math.cos(angle) * SIGN_RADIUS;
+  const signZ = Math.sin(angle) * SIGN_RADIUS;
+  const camR = window.innerWidth < 640 ? 4.6 : 3.6;
+  const pos = new THREE.Vector3(Math.cos(angle) * camR, SIGN_HEIGHT + 0.5, Math.sin(angle) * camR);
+  const look = new THREE.Vector3(signX * 0.35, SIGN_HEIGHT - 0.4 + bob, signZ * 0.35);
+  return { pos, look };
+}
+
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
+  const t = clock.elapsedTime;
+
+  const { pos, look } = computeTarget(t);
+  const ease = 1 - Math.pow(0.0025, dt);
+  camPos.lerp(pos, ease);
+  camLook.lerp(look, ease);
+  camera.position.copy(camPos);
+  camera.lookAt(camLook);
+
+  robot.rotation.y = Math.sin(t * 0.5) * 0.3;
+  robot.position.y = 0.3 + Math.sin(t * 1.6) * 0.03;
+  armR.rotation.z = -deg(18) + Math.sin(t * 2.2) * 0.25;
+  antennaTip.scale.setScalar(1 + Math.sin(t * 3) * 0.15);
+  gearDeco.rotation.z += dt * 0.6;
+
+  clouds.forEach((c, i) => {
+    c.position.y = -1.8 - i * 0.3 + Math.sin(t * 0.4 + i) * 0.15;
+    c.rotation.y += dt * 0.02;
+  });
+
+  signGroup.children.forEach((g) => {
+    g.position.y = g.userData.baseY + Math.sin(t * 1.2 + g.userData.phase) * 0.06;
+  });
+
+  raycaster.setFromCamera(mouseNDC, camera);
+  const hits = raycaster.intersectObjects(signMeshes, false);
+  setHover(hits.length ? hits[0].object : null);
+
+  renderer.render(scene, camera);
+}
+animate();
+
+function onResize() {
+  const w = mount.clientWidth;
+  const h = mount.clientHeight;
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setSize(w, h);
+}
+window.addEventListener("resize", onResize);
+</script>
+</body>
+</html>
