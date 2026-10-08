@@ -70,6 +70,26 @@ h1 em { color:var(--green); font-style:normal; }
 .contact-link small { display:block; color:var(--muted); font-size:12px; margin-bottom:5px; text-transform:uppercase; letter-spacing:1px; }
 .contact-link:hover { border-color:var(--green); color:var(--green); }
 .week-grid { display:grid; gap:22px; }
+.iot-panel { margin:32px 0 42px; padding:24px; border:1px solid var(--line); border-radius:16px; background:linear-gradient(180deg, rgba(213,232,107,.18), rgba(255,255,255,0)); }
+.iot-header { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:20px; }
+.iot-label { display:inline-flex; align-items:center; padding:8px 12px; border-radius:999px; background:var(--green); color:white; font-size:12px; font-weight:800; letter-spacing:1.4px; text-transform:uppercase; }
+.iot-task-tabs { display:flex; flex-wrap:wrap; gap:12px; margin-bottom:18px; }
+.iot-task { padding:12px 18px; border:1px solid var(--line); border-radius:8px; background:white; color:var(--ink); font-weight:700; cursor:pointer; transition:.2s ease; }
+.iot-task.active { background:var(--green); border-color:var(--green); color:white; }
+.iot-document-panel { border:1px solid var(--line); border-radius:12px; background:#fffdf8; overflow:hidden; }
+.iot-document { display:none; padding:22px 20px; }
+.iot-document.active { display:block; }
+.iot-document h3 { margin:0 0 14px; font-size:26px; letter-spacing:-1px; }
+.iot-document h4 { margin:16px 0 8px; color:var(--ink); font-size:16px; }
+.iot-document p, .iot-document li { color:var(--muted); line-height:1.7; }
+.iot-document ul { margin:0; padding-left:20px; }
+.iot-block { margin-top:12px; }
+.iot-video-link { margin-top:18px; }
+.iot-video-link a { display:inline-flex; align-items:center; padding:10px 14px; border-radius:6px; background:var(--green); color:white; font-weight:700; }
+.iot-video-link a:hover { opacity:.92; }
+.iot-media-grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:16px; margin:18px 0; }
+.iot-media-grid img, .iot-media-grid video { width:100%; height:220px; object-fit:cover; border:1px solid var(--line); border-radius:10px; background:#f3f5ed; }
+.iot-media-grid video { display:block; }
 .week-card { padding:26px; border:1px solid var(--line); border-radius:12px; background:var(--card); }
 .week-card-header { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:16px; }
 .week-card h3 { margin:0; color:var(--green); font-size:25px; }
@@ -99,11 +119,28 @@ footer { padding:28px 0; color:var(--muted); font-size:13px; border-top:1px soli
 <section class="section" id="about"><div class="container"><div class="section-heading"><p class="kicker">01 / About</p><h2>Learning by making.</h2><p>My work starts with curiosity and gets better through hands-on practice.</p></div><div class="about-grid"><p class="copy">I am a Mechatronics Engineering student with a growing interest in mechanical design and digital systems. I enjoy picking up new tools quickly, sharpening my technical skills, and understanding how each part of a system fits together.</p><label class="profile-frame"><img id="profile-photo" src="../week2/photo/image.png" alt="Santhosh P profile photo"><input id="profile-photo-input" type="file" accept="image/*"><span class="profile-frame-label">Change profile photo</span></label><div class="skills"><span class="skill">Mechanical builds</span><span class="skill">AGV systems</span><span class="skill">3D printing</span></div></div></div></section>
 <section class="section" id="projects"><div class="container"><div class="section-heading"><p class="kicker">02 / Projects</p><h2>Work in progress, by design.</h2><p>Projects that have helped me move from theory into the workshop.</p></div><div class="projects"><article class="project featured"><div><span class="project-number">01</span><h3>Automated Guided Vehicle</h3><p>Mechanical structure and chassis development for a department AGV build, including fabrication, assembly, and system integration.</p></div><span class="project-tag">Ongoing project</span></article><article class="project"><div><span class="project-number">02</span><h3>Workshop exploration</h3><p>Building practical exposure through cutting, welding, 3D printing, and learning the fundamentals of precision manufacturing.</p></div><span class="project-tag">Learning track</span></article></div></div></section>
 <section class="section" id="experience"><div class="container"><div class="section-heading"><p class="kicker">03 / Experience</p><h2>Getting closer to the machine.</h2></div><div class="experience"><div class="experience-year">Present</div><div><h3>Mechanical Domain Developer</h3><p>AGV Project. Supporting chassis design, fabrication, assembly, and mechanical integration across the vehicle subsystems.</p></div></div><div class="experience"><div class="experience-year">Learning</div><div><h3>Manufacturing fundamentals</h3><p>Exploring CNC machine working principles, Wire EDM technology, and the fundamentals of 3D printing.</p></div></div></div></section>
-<section class="section" id="protosem"><div class="container"><div class="section-heading"><p class="kicker">04 / Protosem</p><h2>Weekly seminar log.</h2><p>Document your learning, experiments, and progress from Week 0 to Week 20. Add up to five photos for every week.</p></div><div class="week-grid" id="week-grid"></div></div></section>
+<section class="section" id="protosem"><div class="container"><div class="section-heading"><p class="kicker">04 / Protosem</p><h2>Weekly seminar log.</h2><p>Document your learning, experiments, and progress from Week 0 to Week 20. Add up to five photos for every week.</p></div><div class="iot-panel"><div class="iot-header"><span class="iot-label">IOT</span></div><div class="iot-task-tabs"><button class="iot-task active" type="button" data-task="task-1">Task 1</button><button class="iot-task" type="button" data-task="task-2">Task 2</button><button class="iot-task" type="button" data-task="task-3">Task 3</button><button class="iot-task" type="button" data-task="task-4">Task 4</button><button class="iot-task" type="button" data-task="task-5">Task 5</button></div><div class="iot-document-panel"></div><div class="week-grid" id="week-grid"></div></div></div></section>
 <section class="section" id="contact"><div class="container contact"><div><p class="kicker">05 / Contact</p><h2>Let us make something useful.</h2><p>I am always open to learning, collaborating, and talking about mechanical systems.</p></div><div class="contact-links"><a class="contact-link" href="mailto:santhosh.24mc@kct.ac.in"><small>Email</small>santhosh.24mc@kct.ac.in</a><a class="contact-link" href="tel:+918610590053"><small>Phone</small>+91 86105 90053</a><a class="contact-link" href="https://linkedin.com/in/santhosh-p-78013032a" target="_blank" rel="noreferrer"><small>LinkedIn</small>santhosh-p-78013032a</a><div class="contact-link"><small>Location</small>Kumaraguru College of Technology, Coimbatore</div></div></div></section>
 </main>
 <footer><div class="container">© 2026 Santhosh P. Built with curiosity and patience.</div></footer>
 <script>
+const taskButtons = document.querySelectorAll('.iot-task');
+const taskPageMap = {
+	'task-1': 'task-detail.html?task=task-1',
+	'task-2': 'task-detail.html?task=task-2',
+	'task-3': 'task-detail.html?task=task-3',
+	'task-4': 'task-detail.html?task=task-4',
+	'task-5': 'task-detail.html?task=task-5'
+};
+
+taskButtons.forEach((button) => {
+	button.addEventListener('click', () => {
+		const targetUrl = taskPageMap[button.dataset.task];
+		if (!targetUrl) return;
+		window.open(targetUrl, '_blank', 'noopener,noreferrer');
+	});
+});
+
 const starterUpdates = {
 	0: `1. Orientation Overview: Week 0 introduced the Protosem structure, including weekly tasks, assignments, and progress tracking up to Week 20, setting clear expectations for consistency and effort.\n\n2. Self-Assessment: Completed the 16Personalities test and identified as Consul (ESFJ-T), highlighting strengths in teamwork, responsibility, organization, and supporting others.\n\n3. Personal Introduction: Shared background as a Mechatronics Engineering student with interests in robotics, automation, and AI, along with expectations from the program.\n\n4. Team Interaction: Engaged in introductions with peers and mentors, helping to build initial connections and establish a collaborative environment for the semester.`,
 	1: `1. Day 1 - Component Testing & 5S Start:\nBegan with 5S activity and tested components like gas sensor, smoke sensor, IR sensor, ESP32, and Arduino using Arduino IDE to check functionality.\n\n2. Day 2 - Classification of Components:\nIdentified working and non-working components and separated them systematically with the team for easier usage and troubleshooting.\n\n3. Day 3 - Organization & Storage:\nArranged and consolidated all components into labeled boxes, ensuring a clean, accessible, and well-structured workspace.\n\n4. Day 4 & 5 - Portfolio Development:\nCreated and organized a professional portfolio including academic details, technical skills, and project work.\n\n5. Key Learning Outcome:\nGained knowledge in 5S workplace organization, teamwork, component testing, and the importance of professional self-presentation.`,
@@ -150,6 +187,7 @@ const week2Images = [
 	'../week2/5.png'
 ];
 const weekGrid = document.getElementById('week-grid');
+if (weekGrid) {
 for (let week = 0; week <= 20; week += 1) {
 	const card = document.createElement('article');
 	card.className = 'week-card';
@@ -235,6 +273,7 @@ for (let week = 0; week <= 20; week += 1) {
 	documentUpload.append(documentButton, documentInput, documentName);
 	card.appendChild(documentUpload);
 	weekGrid.appendChild(card);
+}
 }
 </script>
 </body>

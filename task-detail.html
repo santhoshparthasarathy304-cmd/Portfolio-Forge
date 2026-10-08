@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Task Details</title>
+<style>
+:root { --ink:#202522; --muted:#68716c; --paper:#f7f5ef; --card:#fffdf8; --line:#dfe3db; --green:#1e6b52; --lime:#d5e86b; --orange:#e47e43; }
+* { box-sizing:border-box; }
+body { margin:0; font-family:'DM Sans',sans-serif; background:var(--paper); color:var(--ink); }
+.container { width:min(980px, calc(100% - 32px)); margin:0 auto; padding:32px 0 48px; }
+.back-link { display:inline-block; margin-bottom:22px; color:var(--green); font-weight:700; }
+.task-shell { padding:28px 22px; border:1px solid var(--line); border-radius:16px; background:white; }
+.iot-document { padding:0; }
+.iot-document h3 { margin:0 0 14px; font-size:28px; letter-spacing:-1px; }
+.iot-document h4 { margin:16px 0 8px; color:var(--ink); font-size:16px; }
+.iot-document p, .iot-document li { color:var(--muted); line-height:1.7; }
+.iot-document ul { margin:0; padding-left:20px; }
+.iot-block { margin-top:12px; }
+.iot-media-grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:16px; margin:18px 0; }
+.iot-media-grid img, .iot-media-grid video { width:100%; height:220px; object-fit:cover; border:1px solid var(--line); border-radius:10px; background:#f3f5ed; }
+.iot-media-grid video { display:block; }
+@media (max-width:640px) { .iot-media-grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <a class="back-link" href="index.html#protosem">← Back to Protosem</a>
+  <div id="task-detail" class="task-shell"></div>
+</div>
+<script>
+const taskData = {
+  'task-1': `
+    <article class="iot-document" data-task="task-1">
+      <h3>Task 1 – ESP32 Web Server LED Control</h3>
+      <div class="iot-block"><h4>Objective</h4><p>To develop a simple IoT system using an ESP32 that hosts a web server and allows a user to control an LED through a web browser over Wi-Fi.</p></div>
+      <div class="iot-block"><h4>Components Used</h4><ul><li>ESP32 Development Board</li><li>LED</li><li>Resistor</li><li>Connecting wires</li><li>USB cable</li></ul></div>
+      <div class="iot-block"><h4>Implementation</h4><p>The ESP32 was programmed using Arduino IDE and configured to operate as a web server. The ESP32 was connected to a Wi-Fi network, allowing a user to access the control webpage through a browser.</p><p>The web interface provides controls to:</p><ul><li>Turn ON the LED</li><li>Turn OFF the LED</li></ul><p>When the user selects an option on the webpage, the command is sent to the ESP32 through Wi-Fi using HTTP communication. The ESP32 processes the request and controls the LED through its GPIO pin.</p></div>
+      <div class="iot-block"><h4>Working Flow</h4><p>Web Browser → Wi-Fi → ESP32 Web Server → GPIO → LED</p></div>
+      <div class="iot-block"><h4>Result</h4><p>Successfully developed and tested a Wi-Fi-based ESP32 web server that allows the user to control an LED remotely through a web browser.</p></div>
+      <div class="iot-media-grid"><img src="iot/t1.1.png" alt="Task 1 image 1"><img src="iot/t1.2.png" alt="Task 1 image 2"><video controls playsinline muted><source src="iot/t1.mp4" type="video/mp4"></video></div>
+    </article>
+  `,
+  'task-2': `
+    <article class="iot-document" data-task="task-2">
+      <h3>Task 2 – Cloud-Connected IoT LED Control</h3>
+      <div class="iot-block"><h4>Objective</h4><p>To develop a cloud-connected IoT system using an ESP32, MQTT, and Adafruit IO, allowing a user to remotely control an LED through a web-based dashboard.</p></div>
+      <div class="iot-block"><h4>Components &amp; Technologies Used</h4><ul><li>ESP32</li><li>LED</li><li>MQTT Protocol</li><li>Adafruit IO</li><li>Wi‑Fi</li><li>Arduino IDE</li><li>Adafruit IO Web Dashboard</li></ul></div>
+      <div class="iot-block"><h4>Description</h4><p>In this task, I developed an IoT-based LED control system where the ESP32 connects to the internet through Wi‑Fi and communicates with Adafruit IO using the MQTT protocol.</p><p>A button on the Adafruit IO web dashboard is used to control the LED remotely. When the user switches the button ON or OFF, the corresponding command is sent through MQTT to the ESP32. The ESP32 receives the message and controls the LED accordingly.</p></div>
+      <div class="iot-block"><h4>Working</h4><p>Web Dashboard → Adafruit IO → MQTT → ESP32 → LED</p><ol><li>ESP32 connects to the Wi‑Fi network.</li><li>ESP32 establishes an MQTT connection with Adafruit IO.</li><li>A control button is created on the Adafruit IO dashboard.</li><li>When the user presses the button, Adafruit IO publishes the corresponding MQTT message.</li><li>ESP32 receives the message through the subscribed MQTT feed.</li><li>The ESP32 turns the LED ON or OFF based on the received command.</li></ol></div>
+      <div class="iot-block"><h4>Outcome</h4><p>Successfully developed a cloud-connected remote LED control system using ESP32 and MQTT. This task helped me understand how IoT devices communicate with cloud platforms and how Adafruit IO can be used for remote monitoring and control.</p></div>
+      <div class="iot-block"><h4>Key Learning</h4><ul><li>Understanding IoT cloud connectivity</li><li>MQTT publish and subscribe communication</li><li>ESP32 Wi‑Fi connectivity</li><li>Adafruit IO dashboard creation</li><li>Remote device control</li><li>Basic cloud-to-hardware communication</li></ul></div>
+      <div class="iot-media-grid"><img src="iot/t2.1.png" alt="Task 2 image 1"><img src="iot/t1.2.png" alt="Task 2 image 2"><video controls playsinline muted><source src="iot/t2.mp4" type="video/mp4"></video></div>
+    </article>
+  `,
+  'task-3': `
+    <article class="iot-document" data-task="task-3">
+      <h3>Task 3 – Voice-Controlled Bulb using Adafruit IO, IFTTT &amp; Google Assistant</h3>
+      <div class="iot-block"><h4>Objective</h4><p>To control a bulb using voice commands by integrating Google Assistant, IFTTT, Adafruit IO, and ESP32.</p></div>
+      <div class="iot-block"><h4>Description</h4><p>In this task, I developed a voice-controlled IoT system where a bulb can be switched ON or OFF using a voice command. Google Assistant is used to receive the voice input, while IFTTT acts as the communication link between Google Assistant and Adafruit IO. The command is sent to an Adafruit IO feed, which is then received by the ESP32. Based on the received command, the ESP32 controls a relay to switch the bulb ON or OFF.</p></div>
+      <div class="iot-block"><h4>Working Flow</h4><p>Voice Command → Google Assistant → IFTTT → Adafruit IO → ESP32 → Relay → Bulb</p></div>
+      <div class="iot-block"><h4>Technologies Used</h4><ul><li>ESP32</li><li>Adafruit IO</li><li>IFTTT</li><li>Google Assistant</li><li>Relay Module</li><li>AC Bulb</li><li>IoT / Wi-Fi Communication</li></ul></div>
+      <div class="iot-block"><h4>Outcome</h4><p>Successfully created a basic voice-controlled IoT system in which the bulb can be operated remotely through Google Assistant voice commands.</p></div>
+      <div class="iot-block"><h4>Learning</h4><p>Through this task, I learned how different IoT platforms can be integrated together and how voice commands can be used to control a physical device through cloud-based communication.</p></div>
+      <div class="iot-media-grid"><img src="iot/t3.1.png" alt="Task 3 image 1"><img src="iot/t3.2.png" alt="Task 3 image 2"><img src="iot/t3.3.png" alt="Task 3 image 3"><video controls playsinline muted><source src="iot/t3.mp4" type="video/mp4"></video></div>
+    </article>
+  `,
+  'task-4': `
+    <article class="iot-document" data-task="task-4">
+      <h3>Task 4 – Firebase IoT Environment Monitoring Platform</h3>
+      <div class="iot-block"><h4>Objective</h4><p>To develop an IoT-based environment monitoring system using ESP32 and Firebase to collect temperature, humidity, and ambient-light data and display the readings through a secure web dashboard.</p></div>
+      <div class="iot-block"><h4>Technologies Used</h4><p>ESP32 | DHT11 | LDR | Firebase | HTML | CSS | JavaScript | Wi‑Fi</p></div>
+      <div class="iot-block"><h4>Project Description</h4><p>In this task, I developed a Firebase-connected IoT monitoring platform using an ESP32. The ESP32 collects temperature and humidity data from the DHT11 sensor and ambient-light data from the LDR sensor.</p><p>The collected data is sent to Firebase and displayed on a web dashboard. The dashboard provides live sensor values and historical graphs, making it easier to monitor environmental changes over time.</p></div>
+      <div class="iot-block"><h4>Dashboard Features</h4><ul><li>Firebase-based user login</li><li>Real-time temperature monitoring</li><li>Real-time humidity monitoring</li><li>Ambient-light monitoring using LDR</li><li>Temperature, humidity, and light graphs</li><li>Remote appliance/bulb control</li><li>LDR-based automation with adjustable threshold</li></ul></div>
+      <div class="iot-block"><h4>Working</h4><p>DHT11 + LDR → ESP32 → Wi‑Fi → Firebase → Web Dashboard</p><p>The ESP32 reads the sensor values and uploads them to Firebase. The web dashboard retrieves the stored data and presents it using real-time indicators and graphs. An appliance can also be controlled manually or automatically based on the selected LDR threshold.</p></div>
+      <div class="iot-block"><h4>Outcome</h4><p>Successfully developed a cloud-connected IoT environment monitoring and automation platform with authentication, real-time monitoring, historical data visualization, appliance control, and basic automation.</p></div>
+      <div class="iot-block"><h4>Key Learning</h4><ul><li>ESP32 and sensor interfacing</li><li>Firebase integration</li><li>IoT cloud communication</li><li>Web dashboard development</li><li>Real-time data visualization</li><li>Sensor data analysis</li><li>Appliance automation using sensor conditions</li></ul></div>
+      <div class="iot-media-grid"><img src="iot/t4.1.jpeg" alt="Task 4 image 1"><img src="iot/t4.2.png" alt="Task 4 image 2"></div>
+    </article>
+  `,
+  'task-5': `
+    <article class="iot-document" data-task="task-5">
+      <h3>Task 5 – Home Automation Using ESP32 and Firebase</h3>
+      <div class="iot-block"><h4>Objective</h4><p>To extend the Firebase IoT monitoring platform by adding remote manual control and LDR-based automatic switching of an appliance using an ESP32.</p></div>
+      <div class="iot-block"><h4>Technologies Used</h4><p>ESP32 | LDR | Firebase | Wi‑Fi | HTML | CSS | JavaScript</p></div>
+      <div class="iot-block"><h4>Project Description</h4><p>In this task, I extended the Firebase monitoring platform to create a smart home automation system. The ESP32 controls an appliance connected to it, while Firebase provides the interface for remote control.</p><p>The appliance can be operated in two modes: Manual Mode, where the user controls it directly from the dashboard, and Automatic Mode, where the LDR sensor determines whether the appliance should be switched ON or OFF based on a predefined light threshold.</p></div>
+      <div class="iot-block"><h4>Key Features</h4><ul><li>Remote appliance ON/OFF control</li><li>LDR-based automatic switching</li><li>Manual and Automatic operating modes</li><li>Firebase cloud connectivity</li><li>Integration with the existing monitoring dashboard</li><li>Remote control through a web interface</li></ul></div>
+      <div class="iot-block"><h4>Working</h4><p>LDR → ESP32 → Firebase → Web Dashboard → Appliance</p><p>In Manual Mode, the user presses the control button on the Firebase dashboard, and the ESP32 switches the appliance accordingly.</p><p>In Automatic Mode, the ESP32 compares the LDR reading with the selected threshold. Based on the light level, the appliance is automatically switched ON or OFF without requiring manual input.</p></div>
+      <div class="iot-block"><h4>Outcome</h4><p>Successfully developed a cloud-connected home automation system that combines remote manual control with sensor-based automatic appliance switching.</p></div>
+      <div class="iot-block"><h4>Key Learning</h4><ul><li>Firebase-based remote control</li><li>ESP32 appliance control</li><li>LDR sensor-based automation</li><li>Manual vs automatic control logic</li><li>IoT cloud-to-device communication</li><li>Smart home automation concepts</li></ul></div>
+      <div class="iot-media-grid"><img src="iot/t5.1.png" alt="Task 5 image 1"><img src="iot/t5.2.png" alt="Task 5 image 2"><video controls playsinline muted><source src="iot/t5.mp4" type="video/mp4"></video></div>
+    </article>
+  `
+};
+
+const params = new URLSearchParams(window.location.search);
+const taskId = params.get('task') || 'task-1';
+const container = document.getElementById('task-detail');
+container.innerHTML = taskData[taskId] || '<article class="iot-document"><h3>Task not found</h3><p>The selected task is unavailable.</p></article>';
+</script>
+</body>
+</html>
