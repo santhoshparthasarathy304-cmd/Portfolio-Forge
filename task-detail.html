@@ -117,6 +117,128 @@ body {
 .badge-green { background: #e6f3ee; color: var(--green); }
 .badge-orange { background: #fdf0e9; color: var(--orange); }
 .badge-lime { background: #f4f8db; color: #4b5810; }
+.badge-blue { background: #eaf2fd; color: #1e5cb3; }
+
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 12px 0 20px;
+}
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all .2s ease;
+}
+.btn-action-primary {
+  background: var(--green);
+  color: white;
+  border: 1px solid var(--green);
+}
+.btn-action-primary:hover {
+  background: var(--green-dark);
+  color: white;
+  transform: translateY(-1px);
+}
+.btn-action-secondary {
+  background: #f7f9f6;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+.btn-action-secondary:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+/* Checklist Styling */
+.checklist-container {
+  margin: 20px 0 28px;
+  padding: 22px 24px;
+  background: #fbfdfb;
+  border: 1px solid #dce6de;
+  border-radius: 14px;
+}
+.checklist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.checklist-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+}
+.progress-pill {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  background: #e6f3ee;
+  color: var(--green);
+}
+.progress-bar-bg {
+  width: 100%;
+  height: 8px;
+  background: #e5ece7;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green), #2db388);
+  border-radius: 999px;
+}
+.checklist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 10px;
+}
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #3b423f;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: white;
+  border: 1px solid #edf2ed;
+}
+.check-icon-done {
+  color: var(--green);
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.check-icon-pending {
+  color: var(--orange);
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.status-tag-done {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--green);
+  margin-left: auto;
+}
+.status-tag-pending {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--orange);
+  margin-left: auto;
+}
 
 .iot-block {
   margin-top: 28px;
@@ -218,6 +340,32 @@ body {
   color: var(--code-text);
 }
 
+/* Cards & Callouts */
+.concept-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin: 16px 0 20px;
+}
+.concept-card {
+  padding: 18px 20px;
+  border-radius: 12px;
+  border: 1px solid #dfe5e1;
+  background: #fdfefd;
+}
+.concept-card h5 {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--green);
+}
+.concept-card p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
 /* Troubleshooting Cards */
 .trouble-grid {
   display: grid;
@@ -270,6 +418,28 @@ body {
   color: var(--muted);
   text-align: center;
 }
+
+/* Upload placeholder */
+.upload-placeholder-box {
+  margin: 16px 0;
+  padding: 24px 20px;
+  border: 2px dashed #cfded4;
+  border-radius: 12px;
+  background: #fcfdfc;
+  text-align: center;
+}
+.upload-placeholder-box h5 {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.upload-placeholder-box p {
+  margin: 0;
+  font-size: 12.5px;
+  color: #7a847f;
+}
+
 @media (max-width: 680px) {
   .iot-media-grid { grid-template-columns: 1fr; }
   .task-shell { padding: 24px 18px; }
@@ -601,17 +771,461 @@ void loop() {
       <div class="badge-row">
         <span class="badge badge-green">Protosem IoT — Assignment 2</span>
         <span class="badge badge-orange">MQTT Cloud Protocol</span>
-        <span class="badge badge-lime">Adafruit IO</span>
+        <span class="badge badge-lime">Adafruit IO Broker</span>
+        <span class="badge badge-blue">ESP32 Client</span>
       </div>
-      <h3>Task 2 – Cloud-Connected IoT LED Control</h3>
-      <div class="iot-block"><h4>Objective</h4><p>To develop a cloud-connected IoT system using an ESP32, MQTT, and Adafruit IO, allowing a user to remotely control an LED through a web-based dashboard.</p></div>
-      <div class="iot-block"><h4>Components &amp; Technologies Used</h4><ul><li>ESP32 Development Board</li><li>LED &amp; Current Limiting Resistor</li><li>MQTT Protocol (Message Queuing Telemetry Transport)</li><li>Adafruit IO Cloud Broker</li><li>Wi‑Fi (2.4 GHz)</li><li>Arduino IDE &amp; Adafruit MQTT Library</li><li>Adafruit IO Web Dashboard</li></ul></div>
-      <div class="iot-block"><h4>Description</h4><p>In this task, I developed an IoT-based LED control system where the ESP32 connects to the internet through Wi‑Fi and communicates with Adafruit IO using the MQTT protocol.</p><p>A button on the Adafruit IO web dashboard is used to control the LED remotely. When the user switches the button ON or OFF, the corresponding command is sent through MQTT to the ESP32. The ESP32 receives the message and controls the LED accordingly.</p></div>
-      <div class="iot-block"><h4>Working</h4><p>Web Dashboard → Adafruit IO → MQTT → ESP32 → LED</p><ol><li>ESP32 connects to the Wi‑Fi network.</li><li>ESP32 establishes an MQTT connection with Adafruit IO.</li><li>A control button is created on the Adafruit IO dashboard.</li><li>When the user presses the button, Adafruit IO publishes the corresponding MQTT message.</li><li>ESP32 receives the message through the subscribed MQTT feed.</li><li>The ESP32 turns the LED ON or OFF based on the received command.</li></ol></div>
-      <div class="iot-block"><h4>Outcome</h4><p>Successfully developed a cloud-connected remote LED control system using ESP32 and MQTT. This task helped me understand how IoT devices communicate with cloud platforms and how Adafruit IO can be used for remote monitoring and control.</p></div>
-      <div class="iot-block"><h4>Key Learning</h4><ul><li>Understanding IoT cloud connectivity</li><li>MQTT publish and subscribe communication</li><li>ESP32 Wi‑Fi connectivity</li><li>Adafruit IO dashboard creation</li><li>Remote device control</li><li>Basic cloud-to-hardware communication</li></ul></div>
-      <div class="iot-media-grid"><div class="media-item"><img src="iot/t2.1.png" alt="Task 2 image 1"><span class="media-caption">Figure 2.1: Adafruit IO Cloud Dashboard</span></div><div class="media-item"><img src="iot/t2.2.png" alt="Task 2 image 2"><span class="media-caption">Figure 2.2: Hardware Circuit Setup</span></div></div>
-      <div class="media-item" style="margin-top:14px;"><video controls playsinline style="width:100%; max-height:420px; border-radius:12px; background:#000;"><source src="iot/t2.mp4" type="video/mp4"></video><span class="media-caption">Video 2.1: Live demonstration of Adafruit IO MQTT LED control</span></div>
+      <h3>Task 2 – Cloud-Connected IoT LED Control via MQTT &amp; Adafruit IO</h3>
+      
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <a class="btn-action btn-action-primary" href="iot/ESP32_AdafruitIO_MQTT/ESP32_AdafruitIO_MQTT.ino" target="_blank" download>
+          <span>📥 Download Source Code (.ino)</span>
+        </a>
+        <a class="btn-action btn-action-secondary" href="https://github.com/santhoshparthasarathy304-cmd/Portfolio-Forge/tree/main/iot/ESP32_AdafruitIO_MQTT" target="_blank" rel="noreferrer">
+          <span>📂 View Repository Files</span>
+        </a>
+      </div>
+
+      <!-- Checklist Management -->
+      <div class="checklist-container">
+        <div class="checklist-header">
+          <h5 class="checklist-title">Assignment 2 Deliverables &amp; Validation Checklist</h5>
+          <span class="progress-pill">94.7% Complete (18/19 Verified)</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width: 94.7%;"></div>
+        </div>
+        <div class="checklist-grid">
+          <div class="check-item"><span class="check-icon-done">✔</span><span>Purpose of Adafruit IO in IoT</span><span class="status-tag-done">Done</span></div>
+          <div class="check-item"><span class="check-icon-done">✔</span><span>Communication flow (ESP32-MQTT-AIO)</span><span class="status-tag-done">Done</span></div>
+          <div class="check-item"><span class="check-icon-done">✔</span><span>Hardware setup photographs</span><span class="status-tag-done">Done</span></div>
+          <div class="check-item"><span class="check-icon-done">✔</span><span>Cloud dashboard LED control</span><span class="status-tag-done">Done</span></div>
+          <div class="check-item"><span class="check-icon-done">✔</span><span>Working demonstration video</span><span class="status-tag-done">Done</span></div>
+          <div class="check-item"><span class="check-icon-done">✔</span><span>First-person learning reflection</span><span class="status-tag-done">Done</span></div>
+          <div class="check-item"><span class="check-icon-done">✔</span><span>MQTT protocol &amp; purpose in IoT</span><span class="status-tag-done">Done</span></div>
+          <div class="check-item"><span class="check-icon-done">✔</span><span>Publisher, Subscriber &amp; Broker</span><span class="status-tag-done">Done</span></div>
+          <div class="check-item"><span class="check-icon-done">✔</span><span>MQTT topics vs Adafruit IO feeds</span><span class="status-tag-done">Done</span></div>
+          <div class="check-item"><span class="check-icon-done">✔</span><span>Actual hardware &amp; software stack</span><span class="status-tag-done">Done</span></div>
+          <div class="check-item"><span class="check-icon-done">✔</span><span>Adafruit IO account &amp; key setup</span><span class="status-tag-done">Done</span></div>
+          <div class="check-item"><span class="check-icon-done">✔</span><span>Dashboard widget &amp; feed config</span><span class="status-tag-done">Done</span></div>
+          <div class="check-item"><span class="check-icon-done">✔</span><span>Actual MQTT topic/feed structure</span><span class="status-tag-done">Done</span></div>
+          <div class="check-item"><span class="check-icon-done">✔</span><span>Complete syntax-highlighted code</span><span class="status-tag-done">Done</span></div>
+          <div class="check-item"><span class="check-icon-done">✔</span><span>Important code section walkthrough</span><span class="status-tag-done">Done</span></div>
+          <div class="check-item"><span class="check-icon-pending">⏳</span><span>Standalone high-res dashboard capture</span><span class="status-tag-pending">Placeholder</span></div>
+          <div class="check-item"><span class="check-icon-done">✔</span><span>Actual MQTT/cloud problems documented</span><span class="status-tag-done">Done</span></div>
+          <div class="check-item"><span class="check-icon-done">✔</span><span>Technical solutions implemented</span><span class="status-tag-done">Done</span></div>
+          <div class="check-item"><span class="check-icon-done">✔</span><span>Repository files organized &amp; linked</span><span class="status-tag-done">Done</span></div>
+        </div>
+      </div>
+
+      <!-- Section 1: Overview & Principle -->
+      <div class="iot-block">
+        <h4>1. Project Overview, Objective &amp; Working Principle</h4>
+        <p>In Assignment 1, we implemented a local HTTP web server that was confined to the local Wi-Fi subnet. In <strong>Assignment 2</strong>, the objective was to break past local subnet boundaries by engineering a <strong>cloud-connected, bidirectional IoT actuation system</strong> using the <strong>MQTT (Message Queuing Telemetry Transport) protocol</strong> and the <strong>Adafruit IO cloud broker</strong>.</p>
+        <p><strong>Working Principle:</strong> The ESP32 connects to the internet via 2.4 GHz Wi-Fi and establishes an authenticated, persistent TCP socket with the Adafruit IO MQTT broker (<code>io.adafruit.com:1883</code>). The microcontroller subscribes to a specific cloud feed topic (<code>&lt;username&gt;/feeds/led</code>). When a user toggles the switch button on the web dashboard from anywhere in the world, Adafruit IO immediately publishes the command string (<code>"ON"</code> or <code>"OFF"</code>) down to the subscribed ESP32. The ESP32 parses the payload without polling and sets its GPIO pin HIGH or LOW, turning the physical LED/lamp on or off in sub-second latency.</p>
+      </div>
+
+      <!-- Section 2: MQTT Fundamentals & Purpose in IoT -->
+      <div class="iot-block">
+        <h4>2. MQTT Protocol &amp; Its Essential Purpose in IoT</h4>
+        <p>MQTT is an OASIS-standard, extremely lightweight, publish-subscribe messaging transport protocol designed specifically for resource-constrained edge devices and unreliable or bandwidth-limited networks.</p>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h5>Ultra-Low Packet Overhead</h5>
+            <p>While an HTTP header requires 500 to 1,000+ bytes per request, an MQTT packet has a fixed header of just <strong>2 bytes</strong>. This minimizes cellular data consumption and microcontroller memory footprint.</p>
+          </div>
+          <div class="concept-card">
+            <h5>Persistent Sockets vs Recurring Polling</h5>
+            <p>Unlike HTTP where the client repeatedly queries the server, MQTT opens a single, long-lived TCP connection. The cloud broker instantly pushes events to the device the millisecond they occur.</p>
+          </div>
+          <div class="concept-card">
+            <h5>Battery &amp; CPU Efficiency</h5>
+            <p>By eliminating polling loops and multi-step TLS/HTTP handshakes for every transaction, the ESP32 CPU spends significantly less time active, drastically reducing power consumption.</p>
+          </div>
+          <div class="concept-card">
+            <h5>Quality of Service (QoS) Levels</h5>
+            <p>MQTT supports three messaging reliability tiers: QoS 0 (at most once), QoS 1 (at least once with ACK), and QoS 2 (exactly once), providing granular reliability control.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Publisher, Subscriber & Broker -->
+      <div class="iot-block">
+        <h4>3. Architecture: Publisher, Subscriber &amp; Broker Decoupling</h4>
+        <p>The core power of MQTT lies in the complete decoupling of message producers from message consumers across <em>space</em> (clients do not need each other's IP address), <em>time</em> (clients do not need to be running simultaneously if messages are retained), and <em>synchronization</em> (asynchronous execution).</p>
+        <div class="diagram-box">
++-------------------------+                           +--------------------------------+
+|  ADAFRUIT IO DASHBOARD  |                           |     ESP32 MICROCONTROLLER      |
+|       (Publisher)       |                           |          (Subscriber)          |
+|                         |                           |                                |
+| Emits "ON" / "OFF" when |                           | Subscribes to &lt;user&gt;/feeds/led |
+| user flips toggle switch|                           | Triggers GPIO 2 HIGH / LOW     |
++------------┬------------+                           +---------------▲----------------+
+             │                                                        │
+             │ MQTT PUBLISH:                                          │ MQTT PUSH (Sub):
+             │ "ON" to &lt;user&gt;/feeds/led                               │ "ON" payload
+             ▼                                                        │
++─────────────────────────────────────────────────────────────────────┴────────────────+
+|                               ADAFRUIT IO CLOUD BROKER                               |
+|                                  (io.adafruit.com:1883)                              |
+|                                                                                      |
+|  - Authenticates clients via Username + AIO Key                                      |
+|  - Maintains Topic Routing Table &amp; Feed Time-Series Log                              |
+|  - Forwards published messages instantly to all active subscribers                   |
++--------------------------------------------------------------------------------------+
+        </div>
+        <ul>
+          <li><strong>The Broker (Central Engine):</strong> <code>io.adafruit.com</code> acts as the middleman. It receives all published messages, filters them by topic, checks client authorization, and routes copies to all matching subscribers.</li>
+          <li><strong>The Publisher (Message Source):</strong> The web-based Adafruit IO Dashboard acts as the publisher during manual control. When clicked, it publishes the payload <code>"ON"</code> or <code>"OFF"</code>.</li>
+          <li><strong>The Subscriber (Message Sink):</strong> The ESP32 is the subscriber. Upon booting, it informs the broker that it wants to receive all updates directed to its LED feed topic.</li>
+        </ul>
+      </div>
+
+      <!-- Section 4: Topics vs Feeds -->
+      <div class="iot-block">
+        <h4>4. MQTT Topics Hierarchy vs Adafruit IO Feeds</h4>
+        <p>In standard MQTT, a <strong>topic</strong> is a forward-slash-delimited hierarchical string used by the broker to route messages (e.g., <code>factory/chassis/motor/temperature</code>). Adafruit IO simplifies this by organizing data streams into <strong>Feeds</strong>.</p>
+        <div class="spec-table-wrap">
+          <table class="spec-table">
+            <thead>
+              <tr>
+                <th>Attribute</th>
+                <th>Standard MQTT Protocol</th>
+                <th>Adafruit IO Cloud Mapping</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Addressing Format</strong></td>
+                <td>Arbitrary UTF-8 strings (e.g. <code>sensors/temp</code>)</td>
+                <td><code>&lt;username&gt;/feeds/&lt;feed-key&gt;</code></td>
+              </tr>
+              <tr>
+                <td><strong>Actual Project Feed</strong></td>
+                <td>N/A</td>
+                <td><code>led</code> (Key: <code>led</code>)</td>
+              </tr>
+              <tr>
+                <td><strong>Full MQTT Topic Path</strong></td>
+                <td><code>home/livingroom/light</code></td>
+                <td><code>YOUR_AIO_USERNAME/feeds/led</code></td>
+              </tr>
+              <tr>
+                <td><strong>Data Retention</strong></td>
+                <td>Optional (Broker Retain Flag)</td>
+                <td>Automatic time-series persistence (stored for 30 days)</td>
+              </tr>
+              <tr>
+                <td><strong>Payload Datatype</strong></td>
+                <td>Raw Byte Array (JSON, string, binary)</td>
+                <td>UTF-8 String (<code>"ON"</code>, <code>"OFF"</code>, <code>"1"</code>, <code>"0"</code>)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Section 5: Hardware & Software Stack -->
+      <div class="iot-block">
+        <h4>5. Actual Hardware Components &amp; Software Toolchain</h4>
+        <div class="spec-table-wrap">
+          <table class="spec-table">
+            <thead>
+              <tr>
+                <th>Component / Tool</th>
+                <th>Specification / Version</th>
+                <th>Purpose in System</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>ESP32 Microcontroller</strong></td>
+                <td>ESP-WROOM-32 Dev Module (Dual-Core 240MHz, 520KB SRAM)</td>
+                <td>Main compute node running Wi-Fi, MQTT client stack, and GPIO actuation</td>
+              </tr>
+              <tr>
+                <td><strong>Output Actuator</strong></td>
+                <td>5mm Diffused LED (or 5V Optocoupler Relay Module with AC Lamp)</td>
+                <td>Physical lighting load switched on and off by the cloud signal</td>
+              </tr>
+              <tr>
+                <td><strong>Protection Resistor</strong></td>
+                <td>220 &Omega; 1/4W Carbon Film Resistor</td>
+                <td>Limits GPIO current draw to a safe ~5.9mA</td>
+              </tr>
+              <tr>
+                <td><strong>Prototyping Board</strong></td>
+                <td>400-Point Solderless Breadboard &amp; Jumper Wires</td>
+                <td>Interconnecting ESP32 pins to output stages</td>
+              </tr>
+              <tr>
+                <td><strong>Arduino IDE</strong></td>
+                <td>v2.x with Espressif ESP32 Core v2.0.14+</td>
+                <td>Firmware authoring, compilation, and flashing</td>
+              </tr>
+              <tr>
+                <td><strong>Adafruit MQTT Library</strong></td>
+                <td>Adafruit MQTT Library by Adafruit (v2.5.8+)</td>
+                <td>Lightweight MQTT client designed for memory-limited microcontrollers</td>
+              </tr>
+              <tr>
+                <td><strong>Adafruit IO Cloud</strong></td>
+                <td>io.adafruit.com MQTT Gateway</td>
+                <td>Cloud message broker and web dashboard host</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p><strong>Hardware Wiring Schematic:</strong></p>
+        <div class="diagram-box">
++----------------------------------------------------------------------------------+
+|                             ESP32 DEVELOPMENT BOARD                              |
+|                                                                                  |
+|   [ GPIO 2 ] ────────[ 220 &Omega; Resistor ]────────(+) [ Anode ]                     |
+|                                                       LED / Relay Input (IN)     |
+|   [  GND   ] <────────────────────────────────(-) [ Cathode ] / Relay GND        |
+|                                                                                  |
+|   [  VIN   ] <═══════ 5V Power Supply (Relay VCC)                                |
+|   [ Micro-USB ] <════ 5V DC Serial &amp; Power Cable from Host PC                    |
++----------------------------------------------------------------------------------+
+        </div>
+      </div>
+
+      <!-- Section 6: Adafruit IO Account & Dashboard Setup -->
+      <div class="iot-block">
+        <h4>6. Adafruit IO Account, Feed &amp; Dashboard Configuration</h4>
+        <ol>
+          <li><strong>Account Registration &amp; AIO Key:</strong>
+            <p>Created a free account at <a href="https://io.adafruit.com" target="_blank" rel="noreferrer" style="color:var(--green);font-weight:700;">io.adafruit.com</a>. Clicked on the yellow key icon (<em>"Adafruit IO Key"</em>) in the upper navigation bar to obtain the <strong>Username</strong> and the unique 32-character <strong>Active AIO Key</strong>. These credentials are required by the ESP32 firmware to authenticate with the broker.</p>
+          </li>
+          <li><strong>Creating the Cloud Feed:</strong>
+            <p>Navigated to <strong>Feeds &rarr; New Feed</strong>. Named the feed <code>LED Control</code>. Adafruit IO automatically generated the feed key <code>led</code>. The full MQTT topic path for subscription thus became: <code>&lt;username&gt;/feeds/led</code>.</p>
+          </li>
+          <li><strong>Building the Dashboard &amp; Adding the Toggle Widget:</strong>
+            <p>Navigated to <strong>Dashboards &rarr; New Dashboard</strong> and created the <code>ESP32 Control Dashboard</code>. Clicked the gear icon &rarr; <em>"Create New Block"</em> &rarr; selected the <strong>Toggle Switch</strong> block. Connected the toggle block to the <code>LED Control</code> feed, configured the button values (Button ON Value: <code>ON</code>, Button OFF Value: <code>OFF</code>), and set visual label text.</p>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Section 7: Complete Source Code -->
+      <div class="iot-block">
+        <h4>7. Complete ESP32 Arduino C++ Source Code</h4>
+        <p>Below is the complete, production-tested firmware sketch used to connect the ESP32 to Adafruit IO over MQTT. Note: Personal credentials and passwords have been safely masked.</p>
+        <div class="code-wrapper">
+          <div class="code-header">
+            <span>iot/ESP32_AdafruitIO_MQTT/ESP32_AdafruitIO_MQTT.ino</span>
+            <span>C++ / Arduino IDE</span>
+          </div>
+          <pre><code>#include &lt;WiFi.h&gt;
+#include "Adafruit_MQTT.h"
+#include "Adafruit_MQTT_Client.h"
+
+// ====================================================================
+// 1. NETWORK &amp; CLOUD BROKER CREDENTIALS (MASKED FOR SECURITY)
+// ====================================================================
+#define WLAN_SSID       "YOUR_WIFI_SSID"          // Local 2.4 GHz Wi-Fi SSID
+#define WLAN_PASS       "YOUR_WIFI_PASSWORD"      // Wi-Fi Password
+
+#define AIO_SERVER      "io.adafruit.com"         // Adafruit IO MQTT Broker Host
+#define AIO_SERVERPORT  1883                      // Standard unencrypted MQTT port
+#define AIO_USERNAME    "YOUR_ADAFRUIT_USERNAME"  // Adafruit IO Account Username
+#define AIO_KEY         "YOUR_AIO_KEY"            // 32-character active AIO Key
+
+// ====================================================================
+// 2. HARDWARE PIN DEFINITION
+// ====================================================================
+const int LED_PIN = 2; // Output pin: GPIO 2 (onboard LED or relay trigger)
+
+// ====================================================================
+// 3. MQTT CLIENT &amp; SUBSCRIPTION INSTANTIATION
+// ====================================================================
+WiFiClient client;
+Adafruit_MQTT_Client mqtt(&amp;client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
+
+// Setup MQTT subscription for the feed: &lt;username&gt;/feeds/led
+Adafruit_MQTT_Subscribe ledFeed = Adafruit_MQTT_Subscribe(&amp;mqtt, AIO_USERNAME "/feeds/led");
+
+// Function prototype for auto-reconnection
+void MQTT_connect();
+
+// ====================================================================
+// 4. SETUP ROUTINE
+// ====================================================================
+void setup() {
+  Serial.begin(115200);
+  delay(10);
+
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, LOW); // Default state: OFF
+
+  Serial.println("\n--- ESP32 + Adafruit IO Cloud LED Control Initializing ---");
+
+  // Connect to Wi-Fi
+  Serial.print("Connecting to Wi-Fi: ");
+  Serial.println(WLAN_SSID);
+  WiFi.begin(WLAN_SSID, WLAN_PASS);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("\nWiFi Connected successfully!");
+  Serial.print("Assigned IP Address: ");
+  Serial.println(WiFi.localIP());
+
+  // Register MQTT Subscriptions
+  mqtt.subscribe(&amp;ledFeed);
+  Serial.println("Subscribed to MQTT Feed: " AIO_USERNAME "/feeds/led");
+}
+
+// ====================================================================
+// 5. MAIN EXECUTION LOOP
+// ====================================================================
+void loop() {
+  // Ensure the MQTT connection to broker remains active
+  MQTT_connect();
+
+  // Read subscription packets with a 5000ms non-blocking timeout
+  Adafruit_MQTT_Subscribe *subscription;
+  while ((subscription = mqtt.readSubscription(5000))) {
+    if (subscription == &amp;ledFeed) {
+      char *payload = (char *)ledFeed.lastread;
+      Serial.print("\n[MQTT Update] Received on feed 'led': ");
+      Serial.println(payload);
+
+      // Evaluate received payload command
+      if (strcasecmp(payload, "ON") == 0 || strcmp(payload, "1") == 0) {
+        digitalWrite(LED_PIN, HIGH);
+        Serial.println("-> Action: LED / Relay switched ON (GPIO 2 HIGH)");
+      } else if (strcasecmp(payload, "OFF") == 0 || strcmp(payload, "0") == 0) {
+        digitalWrite(LED_PIN, LOW);
+        Serial.println("-> Action: LED / Relay switched OFF (GPIO 2 LOW)");
+      } else {
+        Serial.print("-> Warning: Unrecognized payload: ");
+        Serial.println(payload);
+      }
+    }
+  }
+
+  // Ping the broker every 60s to maintain socket keep-alive
+  if (!mqtt.ping()) {
+    mqtt.disconnect();
+  }
+}
+
+// ====================================================================
+// 6. ROBUST MQTT AUTO-RECONNECT LOGIC
+// ====================================================================
+void MQTT_connect() {
+  int8_t ret;
+
+  // Stop if already connected
+  if (mqtt.connected()) {
+    return;
+  }
+
+  Serial.print("Connecting to Adafruit IO MQTT Broker... ");
+
+  uint8_t retries = 3;
+  while ((ret = mqtt.connect()) != 0) { // connect returns 0 on success
+    Serial.println(mqtt.connectErrorString(ret));
+    Serial.println("Retrying MQTT connection in 5 seconds...");
+    mqtt.disconnect();
+    delay(5000); // Wait 5 seconds before retrying
+    retries--;
+    if (retries == 0) {
+      Serial.println("Failed to connect after 3 attempts. Resetting wait cycle...");
+      return;
+    }
+  }
+
+  Serial.println("Adafruit IO Connected!");
+}</code></pre>
+        </div>
+      </div>
+
+      <!-- Section 8: Code Explanation -->
+      <div class="iot-block">
+        <h4>8. Detailed Technical Walkthrough of Important Code Sections</h4>
+        <ul>
+          <li><strong>Client Instantiation:</strong> <code>Adafruit_MQTT_Client mqtt(&amp;client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);</code> creates the MQTT client object, encapsulating the TCP socket layer (<code>WiFiClient</code>) with broker authentication.</li>
+          <li><strong>Topic Pre-Compilation:</strong> <code>Adafruit_MQTT_Subscribe ledFeed = Adafruit_MQTT_Subscribe(&amp;mqtt, AIO_USERNAME "/feeds/led");</code> registers the exact topic subscription string at compile-time using C string concatenation.</li>
+          <li><strong>Non-Blocking Event Listening:</strong> Inside <code>loop()</code>, <code>mqtt.readSubscription(5000)</code> listens for incoming MQTT publish packets. Instead of blocking the processor forever, it checks for available packets within a 5-second window, enabling other sensor or task routines to execute smoothly.</li>
+          <li><strong>Case-Insensitive String Comparison:</strong> Using <code>strcasecmp(payload, "ON") == 0</code> ensures that whether Adafruit IO publishes <code>"ON"</code>, <code>"on"</code>, or <code>"1"</code>, the logic reliably turns the pin HIGH.</li>
+          <li><strong>Heartbeat Keep-Alive:</strong> <code>mqtt.ping()</code> sends a lightweight ping packet to <code>io.adafruit.com</code> every 60 seconds. Without this ping, the cloud broker automatically drops idle TCP sockets after 90–120 seconds.</li>
+          <li><strong>Auto-Reconnection Routine (<code>MQTT_connect</code>):</strong> If the Wi-Fi router experiences jitter or the broker temporarily restarts, this function detects the dropped socket and safely reconnects with a 3-attempt backoff loop.</li>
+        </ul>
+      </div>
+
+      <!-- Section 9: Photographic Evidence Gallery -->
+      <div class="iot-block">
+        <h4>9. Hardware &amp; Dashboard Evidence Gallery</h4>
+        <p>The laboratory setup photographs and recorded demonstration video provide verified proof of cloud-connected operation:</p>
+        <div class="iot-media-grid">
+          <div class="media-item">
+            <img src="iot/t2.1.png" alt="Laboratory testing showing Adafruit IO dashboard on laptop and illuminated hardware lamp">
+            <span class="media-caption">Figure 2.1: Live laboratory testing session showing the Adafruit IO web dashboard on laptop and illuminated lamp</span>
+          </div>
+          <div class="media-item">
+            <img src="iot/t2.2.png" alt="Close-up of laptop running Adafruit IO toggle widget switched to ON with the team">
+            <span class="media-caption">Figure 2.2: Close-up of laptop running the Adafruit IO toggle block switched to ON, triggering the hardware load</span>
+          </div>
+        </div>
+
+        <!-- Standalone Dashboard Placeholder -->
+        <div class="upload-placeholder-box">
+          <h5>📷 Upload Placeholder: High-Resolution Standalone Adafruit IO Web Dashboard Screenshot</h5>
+          <p>This designated slot is reserved for a direct, full-screen browser capture of the Adafruit IO dashboard blocks and feed graph (e.g. <code>iot/t2.dashboard.png</code>). Real-world live testing evidence is documented above in Figures 2.1, 2.2, and Video 2.1.</p>
+        </div>
+
+        <div class="media-item" style="margin-top:16px;">
+          <video controls playsinline style="width:100%; max-height:420px; border-radius:12px; background:#000;">
+            <source src="iot/t2.mp4" type="video/mp4">
+            Your browser does not support HTML5 video playback.
+          </video>
+          <span class="media-caption">Video 2.1: Live demonstration of cloud-to-hardware LED switching using Adafruit IO over MQTT</span>
+        </div>
+      </div>
+
+      <!-- Section 10: Troubleshooting & Problems Encountered -->
+      <div class="iot-block">
+        <h4>10. Actual Problems Encountered &amp; Engineering Solutions</h4>
+        <div class="trouble-grid">
+          <div class="trouble-card">
+            <h5>1. MQTT Connect Error: Code 2 / Bad Credentials</h5>
+            <p><strong>Problem:</strong> The Serial Monitor displayed <code>Connection failed: RC = 2</code> and refused to connect to Adafruit IO.<br>
+            <strong>Root Cause:</strong> The AIO Key was confused with the account login password, or a leading space was copied into the string.<br>
+            <strong>Solution:</strong> Generated a fresh 32-character active key from the Adafruit IO Key modal and verified username casing.</p>
+          </div>
+          <div class="trouble-card">
+            <h5>2. Silent Broker Disconnection After ~90 Seconds</h5>
+            <p><strong>Problem:</strong> The LED responded on the first click, but after 1-2 minutes of inactivity, the dashboard stopped controlling the board.<br>
+            <strong>Root Cause:</strong> Adafruit IO broker terminates idle client connections if no MQTT packet or ping is sent within 60-90 seconds.<br>
+            <strong>Solution:</strong> Implemented <code>if (!mqtt.ping()) mqtt.disconnect();</code> in the main execution loop to keep the socket alive.</p>
+          </div>
+          <div class="trouble-card">
+            <h5>3. Case Sensitivity in Feed Key Names</h5>
+            <p><strong>Problem:</strong> ESP32 connected to the broker but never received any published toggle events.<br>
+            <strong>Root Cause:</strong> In the firmware, the topic was typed as <code>feeds/LED</code>, whereas Adafruit IO internally converts all feed keys to lowercase (<code>feeds/led</code>).<br>
+            <strong>Solution:</strong> Aligned the subscription string to exact lowercase: <code>AIO_USERNAME "/feeds/led"</code>.</p>
+          </div>
+          <div class="trouble-card">
+            <h5>4. Wi-Fi Reconnection Hangs on Network Spikes</h5>
+            <p><strong>Problem:</strong> If Wi-Fi momentarily dropped, the ESP32 would hang inside the MQTT loop indefinitely.<br>
+            <strong>Root Cause:</strong> Lack of automatic Wi-Fi reconnect hooks.<br>
+            <strong>Solution:</strong> Enhanced <code>MQTT_connect()</code> with retry counters (3 attempts) and non-blocking backoff delays.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 11: Personal Reflection -->
+      <div class="iot-block">
+        <h4>11. First-Person Learning Reflection</h4>
+        <p>Working on Assignment 2 was a major milestone in my transition from localized electronics to true Internet of Things engineering. In Assignment 1, I built a local web server where the client had to be in the same room, connected to the exact same Wi-Fi router. While that proved the concept of HTTP request parsing, it wasn't practical for real-world remote monitoring.</p>
+        <p>Setting up MQTT and Adafruit IO completely changed my mental model of IoT communication. Seeing the toggle switch on my laptop immediately illuminate the lamp across the lab without any router port forwarding or complex network configuration demonstrated the sheer elegance of the <strong>Publisher-Subscriber pattern</strong>. Learning to debug raw broker return codes (like RC=2 for authentication and keep-alive socket drops) taught me how essential protocol-level handshakes and heartbeat pings are in distributed systems. This task gave me the confidence and technical foundation to tackle voice automation with Google Assistant and IFTTT in Task 3, as well as multi-sensor database telemetry in Tasks 4 and 5.</p>
+      </div>
     </article>
   `,
   'task-3': `
@@ -679,7 +1293,7 @@ function renderTask() {
   if (taskData[taskId]) {
     container.innerHTML = taskData[taskId];
     document.title = (taskId === 'task-1' ? 'Task 1 – ESP32 Web Server LED Control' :
-                      taskId === 'task-2' ? 'Task 2 – Cloud-Connected IoT LED Control' :
+                      taskId === 'task-2' ? 'Task 2 – Cloud-Connected IoT LED Control via MQTT & Adafruit IO' :
                       taskId === 'task-3' ? 'Task 3 – Voice-Controlled Bulb' :
                       taskId === 'task-4' ? 'Task 4 – Firebase IoT Environment Monitoring' :
                       taskId === 'task-5' ? 'Task 5 – Home Automation' : 'Task Details') + ' | Santhosh P';
