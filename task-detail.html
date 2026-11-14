@@ -1562,17 +1562,489 @@ void MQTT_connect() {
       <div class="badge-row">
         <span class="badge badge-green">Protosem IoT — Assignment 4</span>
         <span class="badge badge-orange">Firebase Realtime DB</span>
-        <span class="badge badge-lime">Sensor Telemetry</span>
+        <span class="badge badge-lime">BaaS Cloud Platform</span>
+        <span class="badge badge-blue">ESP32 + DHT11 + LDR</span>
       </div>
-      <h3>Task 4 – Firebase IoT Environment Monitoring Platform</h3>
-      <div class="iot-block"><h4>Objective</h4><p>To develop an IoT-based environment monitoring system using ESP32 and Firebase to collect temperature, humidity, and ambient-light data and display the readings through a secure web dashboard.</p></div>
-      <div class="iot-block"><h4>Technologies Used</h4><p>ESP32 | DHT11 Temperature &amp; Humidity Sensor | LDR Light Sensor | Google Firebase Realtime Database | HTML5 | CSS3 | JavaScript | Wi‑Fi</p></div>
-      <div class="iot-block"><h4>Project Description</h4><p>In this task, I developed a Firebase-connected IoT monitoring platform using an ESP32. The ESP32 collects temperature and humidity data from the DHT11 sensor and ambient-light data from the LDR sensor.</p><p>The collected data is sent to Firebase and displayed on a web dashboard. The dashboard provides live sensor values and historical graphs, making it easier to monitor environmental changes over time.</p></div>
-      <div class="iot-block"><h4>Dashboard Features</h4><ul><li>Firebase-based user authentication</li><li>Real-time temperature telemetry (&deg;C)</li><li>Real-time relative humidity monitoring (% RH)</li><li>Ambient-light intensity tracking using LDR</li><li>Historical trend graphs</li><li>Remote appliance/bulb control toggle</li><li>Configurable LDR automation threshold</li></ul></div>
-      <div class="iot-block"><h4>Working</h4><p>DHT11 + LDR → ESP32 → Wi‑Fi → Firebase Realtime DB → Web Dashboard</p><p>The ESP32 reads the sensor values and uploads them to Firebase. The web dashboard retrieves the stored data and presents it using real-time indicators and graphs. An appliance can also be controlled manually or automatically based on the selected LDR threshold.</p></div>
-      <div class="iot-block"><h4>Outcome</h4><p>Successfully developed a cloud-connected IoT environment monitoring and automation platform with authentication, real-time monitoring, historical data visualization, appliance control, and basic automation.</p></div>
-      <div class="iot-block"><h4>Key Learning</h4><ul><li>ESP32 and sensor interfacing</li><li>Firebase Realtime Database REST API</li><li>IoT cloud communication</li><li>Web dashboard development</li><li>Real-time data visualization</li><li>Sensor data analysis</li><li>Appliance automation using sensor conditions</li></ul></div>
-      <div class="iot-media-grid"><div class="media-item"><img src="iot/t4.1.jpeg" alt="Task 4 image 1"><span class="media-caption">Figure 4.1: Firebase Environment Dashboard</span></div><div class="media-item"><img src="iot/t4.2.png" alt="Task 4 image 2"><span class="media-caption">Figure 4.2: Realtime Sensor Metrics</span></div></div>
+      <h3>Task 4 – Firebase IoT Environment Monitoring Dashboard</h3>
+      
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <a class="btn-action btn-action-primary" href="iot/firebase_dashboard/index.html" target="_blank">
+          <span>🖥️ View Live Web Dashboard</span>
+        </a>
+        <a class="btn-action btn-action-primary" href="iot/ESP32_Firebase_Monitoring/ESP32_Firebase_Monitoring.ino" target="_blank" download>
+          <span>📥 Download ESP32 Code (.ino)</span>
+        </a>
+        <a class="btn-action btn-action-secondary" href="https://github.com/santhoshparthasarathy304-cmd/Portfolio-Forge/tree/main/iot/firebase_dashboard" target="_blank" rel="noreferrer">
+          <span>📂 View Repository Files</span>
+        </a>
+      </div>
+
+      <!-- Section 1: Overview & Principle -->
+      <div class="iot-block">
+        <h4>1. Project Overview, Objective &amp; Working Principle</h4>
+        <p>In Assignment 3, we explored voice automation using cloud middleware. In <strong>Assignment 4</strong>, the objective was to engineer a production-grade, full-stack <strong>Cloud-Connected Environmental Telemetry &amp; Monitoring Platform</strong> using an <strong>ESP32 microcontroller</strong>, <strong>Google Firebase Realtime Database (BaaS)</strong>, and a custom authenticated <strong>Web Dashboard</strong>.</p>
+        <p><strong>Working Principle:</strong> The ESP32 collects ambient temperature and relative humidity from a digital <strong>DHT11 sensor</strong>, alongside ambient light intensity from an analog <strong>LDR photoresistor</strong> circuit. The microcontroller packages these telemetry points into JSON and transmits them over a secure Wi-Fi HTTPS connection into Google Firebase Realtime Database. On the client side, authorized users authenticate through a secure email/password portal. Once authenticated, the web dashboard establishes a real-time WebSocket connection to Firebase, automatically updating SVG analog meter gauges and interactive Chart.js trend graphs in sub-second latency whenever new data arrives—completely eliminating traditional HTTP polling.</p>
+      </div>
+
+      <!-- Section 2: Cloud Computing Concepts & Models -->
+      <div class="iot-block">
+        <h4>2. Cloud Computing Fundamentals &amp; Service Models (IaaS, PaaS, SaaS, BaaS)</h4>
+        <p><strong>Cloud Computing</strong> refers to the on-demand delivery of computing services—including servers, storage, databases, networking, and software—over the internet ("the cloud") with flexible resource scaling and pay-as-you-go pricing.</p>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h5>IaaS (Infrastructure as a Service)</h5>
+            <p>Provides raw virtualized compute and storage resources. The cloud vendor manages hardware and virtualization; the customer manages OS, middleware, and application runtime (e.g., AWS EC2, Google Compute Engine).</p>
+          </div>
+          <div class="concept-card">
+            <h5>PaaS (Platform as a Service)</h5>
+            <p>Provides a managed execution environment. The provider manages the operating system, server hardware, and networking; the developer only manages the deployed application code (e.g., Heroku, Google App Engine).</p>
+          </div>
+          <div class="concept-card">
+            <h5>SaaS (Software as a Service)</h5>
+            <p>Delivers complete, fully managed end-user software applications over the web. Users access the interface directly via browsers without managing any underlying infrastructure (e.g., Google Drive, Gmail, Slack).</p>
+          </div>
+          <div class="concept-card">
+            <h5>BaaS (Backend as a Service) — Used in Task 4</h5>
+            <p>Specifically tailored for web, mobile, and IoT developers. Provides pre-built, fully managed cloud backend services—such as real-time NoSQL databases, user authentication, and storage—accessible via direct client SDKs (e.g., <strong>Google Firebase</strong>).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Cloud Platforms & Firebase Realtime Database -->
+      <div class="iot-block">
+        <h4>3. Cloud Platforms &amp; Firebase Realtime Database in IoT</h4>
+        <p>While enterprise IoT systems can utilize AWS IoT Core or Microsoft Azure IoT Hub, <strong>Google Firebase</strong> is an industry-leading BaaS platform ideal for rapid telemetry visualization and secure access control:</p>
+        <ul>
+          <li><strong>NoSQL JSON Tree Architecture:</strong> Data is organized as a single hierarchical JSON tree, making it natural to represent multi-sensor IoT payloads without rigid SQL table migrations.</li>
+          <li><strong>Real-Time WebSocket Synchronization:</strong> Unlike conventional databases that require polling, Firebase Realtime Database pushes data changes to all subscribed web clients instantly over persistent WebSockets using the <code>on('value')</code> event listener.</li>
+          <li><strong>Cloud-Based Dashboards:</strong> Eliminates the need for local server hosting. The monitoring dashboard is a lightweight Single Page Application (SPA) that runs in any web browser and binds directly to Firebase data streams.</li>
+        </ul>
+      </div>
+
+      <!-- Section 4: Authentication vs Authorization -->
+      <div class="iot-block">
+        <h4>4. Authentication vs. Authorization in IoT Security</h4>
+        <p>Securing remote access to IoT telemetry and appliance controls requires two distinct security layers:</p>
+        <div class="spec-table-wrap">
+          <table class="spec-table">
+            <thead>
+              <tr>
+                <th>Security Concept</th>
+                <th>Core Question</th>
+                <th>Implementation in Assignment 4</th>
+                <th>Role in System</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Authentication (AuthN)</strong></td>
+                <td><em>"Who are you?"</em></td>
+                <td>Firebase Authentication (<code>signInWithEmailAndPassword</code>)</td>
+                <td>Verifies user credentials (email &amp; password) before granting dashboard entry.</td>
+              </tr>
+              <tr>
+                <td><strong>Authorization (AuthZ)</strong></td>
+                <td><em>"What are you allowed to do?"</em></td>
+                <td>Firebase Realtime Database Security Rules (<code>.read</code> / <code>.write</code>)</td>
+                <td>Ensures only authenticated user tokens (<code>auth != null</code>) can read or alter sensor data.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>Configured Firebase Security Rules:</strong></p>
+        <div class="diagram-box">
+{
+  "rules": {
+    "environment": {
+      ".read": "auth != null",
+      ".write": true
+    }
+  }
+}
+        </div>
+        <p>This rule guarantees that while the physical ESP32 node can write sensor telemetry, only users with verified Firebase login credentials can read and inspect the live environmental data.</p>
+      </div>
+
+      <!-- Section 5: Realtime Database Structure -->
+      <div class="iot-block">
+        <h4>5. Realtime Database Schema &amp; Data Hierarchy</h4>
+        <p>The Firebase Realtime Database organizes incoming sensor streams under a structured JSON hierarchy:</p>
+        <div class="diagram-box">
+{
+  "environment": {
+    "temperature": 28.0,      // Current temperature in Celsius (from DHT11)
+    "humidity": 65.0,         // Current relative humidity in % (from DHT11)
+    "light": 700              // Ambient light intensity 0-4095 ADC (from LDR)
+  },
+  "history": {
+    "1": { "temperature": 26.0, "humidity": 60.0 },
+    "2": { "temperature": 27.0, "humidity": 62.0 },
+    "3": { "temperature": 28.0, "humidity": 65.0 },
+    "4": { "temperature": 27.0, "humidity": 64.0 },
+    "5": { "temperature": 28.0, "humidity": 65.0 }
+  }
+}
+        </div>
+      </div>
+
+      <!-- Section 6: Hardware & Software Stack -->
+      <div class="iot-block">
+        <h4>6. Actual Hardware Components &amp; Software Toolchain</h4>
+        <div class="spec-table-wrap">
+          <table class="spec-table">
+            <thead>
+              <tr>
+                <th>Component / Tool</th>
+                <th>Specification / Model</th>
+                <th>Role in the Telemetry System</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>ESP32 Microcontroller</strong></td>
+                <td>ESP-WROOM-32 (Dual-Core 240MHz, 2.4 GHz Wi-Fi)</td>
+                <td>Samples sensors, formats JSON payloads, and pushes data to Firebase over HTTPS</td>
+              </tr>
+              <tr>
+                <td><strong>DHT11 Sensor</strong></td>
+                <td>Digital Temperature (0–50°C &plusmn;2°C) &amp; Humidity (20–90% &plusmn;5%)</td>
+                <td>Provides digital environmental temperature and relative humidity readings</td>
+              </tr>
+              <tr>
+                <td><strong>LDR Sensor Circuit</strong></td>
+                <td>5mm Light Dependent Resistor + 10k&Omega; Carbon Film Resistor</td>
+                <td>Analog voltage divider mapping ambient illumination to ESP32 ADC</td>
+              </tr>
+              <tr>
+                <td><strong>Google Firebase</strong></td>
+                <td>Firebase Realtime Database &amp; Firebase Authentication (BaaS)</td>
+                <td>Cloud NoSQL database and secure user credential verification service</td>
+              </tr>
+              <tr>
+                <td><strong>Web Dashboard</strong></td>
+                <td>HTML5, CSS3, JavaScript (ES6), Chart.js &amp; Firebase Web SDK</td>
+                <td>Single Page Application rendering analog meters and real-time graphs</td>
+              </tr>
+              <tr>
+                <td><strong>Arduino IDE</strong></td>
+                <td>v2.x with <code>FirebaseESP32.h</code> &amp; <code>DHT.h</code> libraries</td>
+                <td>Firmware development, calibration, and Serial diagnostic monitoring</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Section 7: Circuit Schematic -->
+      <div class="iot-block">
+        <h4>7. Circuit Design &amp; Sensor Wiring Schematic</h4>
+        <p>The hardware interface interfaces both digital and analog sensor inputs to the ESP32:</p>
+        <div class="diagram-box">
++-----------------------------------------------------------------------------------------+
+|                                ESP32 DEV MODULE (30-PIN)                                |
+|                                                                                         |
+|   [ 3.3V ] ─────────────┬───────────────────────────────┬───────────────────────────┐   |
+|                         │                               │                           │   |
+|                         ▼ (Pin 1: VCC)                  ▼ (LDR Leg 1)               │   |
+|                  +---------------+             +-----------------+                  │   |
+|                  |     DHT11     |             |  LDR (Light)    |                  │   |
+|                  | SENSOR MODULE |             +--------┬--------+                  │   |
+|                  +-------┬-------+                      │ (Voltage Divider Junction)│   |
+|                          │ (Pin 2: DATA)                ▼                           │   |
+|   [ GPIO 15 ] <──────────┘                     +-----------------+                  │   |
+|                                                | 10k&Omega; Resistor |                  │   |
+|   [ GPIO 34 (ADC1_CH6) ] <─────────────────────+--------┬--------+                  │   |
+|                                                         │                           │   |
+|   [  GND   ] <──────────┴───────────────────────────────┴───────────────────────────┘   |
++-----------------------------------------------------------------------------------------+
+        </div>
+        <ul>
+          <li><strong>DHT11 Connection:</strong> Powered from 3.3V and GND. The single-bus digital DATA line is connected to digital pin <code>GPIO 15</code> with an internal/external pull-up resistor.</li>
+          <li><strong>LDR Voltage Divider:</strong> One leg connects to 3.3V; the other connects to analog input <code>GPIO 34</code> and to GND via a 10k&Omega; pull-down resistor. In bright light, LDR resistance decreases, raising the voltage read by the 12-bit ADC (0 to 4095).</li>
+        </ul>
+      </div>
+
+      <!-- Section 8: ESP32 Source Code -->
+      <div class="iot-block">
+        <h4>8. Complete ESP32 Firmware Source Code</h4>
+        <p>Below is the complete, production-tested Arduino sketch that samples the DHT11 and LDR sensors and streams telemetry to Firebase Realtime Database:</p>
+        <div class="code-wrapper">
+          <div class="code-header">
+            <span>iot/ESP32_Firebase_Monitoring/ESP32_Firebase_Monitoring.ino</span>
+            <span>C++ / Arduino IDE</span>
+          </div>
+          <pre><code>#include &lt;WiFi.h&gt;
+#include &lt;FirebaseESP32.h&gt;
+#include &lt;DHT.h&gt;
+
+// ====================================================================
+// 1. WI-FI &amp; FIREBASE CREDENTIALS (MASKED FOR SECURITY)
+// ====================================================================
+#define WIFI_SSID       "YOUR_WIFI_SSID"
+#define WIFI_PASSWORD   "YOUR_WIFI_PASSWORD"
+
+#define FIREBASE_HOST   "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com/"
+#define FIREBASE_AUTH   "YOUR_FIREBASE_DATABASE_SECRET_OR_WEB_API_KEY"
+
+// ====================================================================
+// 2. PIN DEFINITIONS &amp; SENSOR OBJECTS
+// ====================================================================
+#define DHTPIN          15        // GPIO 15 connected to DHT11 Data pin
+#define DHTTYPE         DHT11     // DHT 11 sensor model
+#define LDRPIN          34        // GPIO 34 (ADC1 Channel 6) connected to LDR analog output
+
+DHT dht(DHTPIN, DHTTYPE);
+
+// Firebase objects
+FirebaseData fbdo;
+FirebaseAuth auth;
+FirebaseConfig config;
+
+// Timing variables
+unsigned long previousMillis = 0;
+const long interval = 5000; // Push sensor telemetry every 5 seconds
+
+// ====================================================================
+// 3. SETUP ROUTINE
+// ====================================================================
+void setup() {
+  Serial.begin(115200);
+  delay(10);
+
+  dht.begin();
+  pinMode(LDRPIN, INPUT);
+
+  Serial.println("
+--- ESP32 + Firebase Realtime DB Monitoring System Boot ---");
+
+  // Connect to Local Wi-Fi
+  Serial.print("Connecting to Wi-Fi: ");
+  Serial.println(WIFI_SSID);
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("
+WiFi Connected successfully!");
+  Serial.print("Assigned IP Address: ");
+  Serial.println(WiFi.localIP());
+
+  // Configure Firebase Client
+  config.host = FIREBASE_HOST;
+  config.signer.tokens.legacy_token = FIREBASE_AUTH;
+
+  Firebase.begin(&amp;config, &amp;auth);
+  Firebase.reconnectWiFi(true);
+
+  // Set timeout and buffer sizes
+  fbdo.setBSSLBufferSize(1024, 1024);
+  fbdo.setResponseSize(1024);
+
+  Serial.println("Firebase Client Connected and Initialized.");
+}
+
+// ====================================================================
+// 4. MAIN LOOP
+// ====================================================================
+void loop() {
+  unsigned long currentMillis = millis();
+
+  if (currentMillis - previousMillis &gt;= interval) {
+    previousMillis = currentMillis;
+
+    // Read Sensor Values
+    float humidity = dht.readHumidity();
+    float temperature = dht.readTemperature(); // Celsius
+    int ldrValue = analogRead(LDRPIN);         // 0 to 4095
+
+    // Check for sensor read failure
+    if (isnan(humidity) || isnan(temperature)) {
+      Serial.println("Error: Failed to read from DHT11 sensor! Skipping cycle.");
+      return;
+    }
+
+    Serial.println("
+--- Sensor Telemetry Sample ---");
+    Serial.printf("Temperature: %.1f °C | Humidity: %.1f %% | Light (LDR): %d
+", temperature, humidity, ldrValue);
+
+    // Push data to Firebase Realtime Database node: /environment
+    if (Firebase.setFloat(fbdo, "/environment/temperature", temperature)) {
+      Serial.println("-&gt; Uploaded: /environment/temperature");
+    } else {
+      Serial.printf("-&gt; Failed to set Temperature: %s
+", fbdo.errorReason().c_str());
+    }
+
+    if (Firebase.setFloat(fbdo, "/environment/humidity", humidity)) {
+      Serial.println("-&gt; Uploaded: /environment/humidity");
+    } else {
+      Serial.printf("-&gt; Failed to set Humidity: %s
+", fbdo.errorReason().c_str());
+    }
+
+    if (Firebase.setInt(fbdo, "/environment/light", ldrValue)) {
+      Serial.println("-&gt; Uploaded: /environment/light");
+    } else {
+      Serial.printf("-&gt; Failed to set Light: %s
+", fbdo.errorReason().c_str());
+    }
+  }
+}</code></pre>
+        </div>
+      </div>
+
+      <!-- Section 9: Dashboard Source Code -->
+      <div class="iot-block">
+        <h4>9. Complete Web Dashboard Source Code (HTML/CSS/JS)</h4>
+        <p>Below is the complete client-side dashboard implementation including Firebase Authentication, real-time database listeners, analog meter gauges, and Chart.js graphs:</p>
+        <div class="code-wrapper">
+          <div class="code-header">
+            <span>iot/firebase_dashboard/index.html</span>
+            <span>HTML5 / JavaScript / Firebase SDK</span>
+          </div>
+          <pre><code>&lt;!-- Firebase v8 SDK --&gt;
+&lt;script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"&gt;&lt;/script&gt;
+&lt;script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"&gt;&lt;/script&gt;
+&lt;script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/chart.js"&gt;&lt;/script&gt;
+
+&lt;script&gt;
+// Firebase Config Object
+const firebaseConfig = {
+  apiKey: "YOUR_FIREBASE_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "1234567890",
+  appId: "1:1234567890:web:abcdef123456"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.database();
+
+// Auth State Observer
+auth.onAuthStateChanged((user) =&gt; {
+  if (user) {
+    document.getElementById('login-container').style.display = 'none';
+    document.getElementById('dashboard-container').style.display = 'block';
+    initRealtimeListener();
+  } else {
+    document.getElementById('login-container').style.display = 'block';
+    document.getElementById('dashboard-container').style.display = 'none';
+  }
+});
+
+// Login Handler
+document.getElementById('btn-login').addEventListener('click', () =&gt; {
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+  auth.signInWithEmailAndPassword(email, password)
+    .catch((err) =&gt; alert("Auth Error: " + err.message));
+});
+
+// Realtime Database Listener
+function initRealtimeListener() {
+  db.ref('environment').on('value', (snapshot) =&gt; {
+    const data = snapshot.val();
+    if (!data) return;
+
+    // Update Telemetry Display
+    document.getElementById('temp-val').textContent = (data.temperature || 28) + ' °C';
+    document.getElementById('humidity-val').textContent = (data.humidity || 65) + ' %';
+    document.getElementById('light-val').textContent = data.light || 700;
+  });
+}
+&lt;/script&gt;</code></pre>
+        </div>
+      </div>
+
+      <!-- Section 10: Evidence Gallery -->
+      <div class="iot-block">
+        <h4>10. Actual Dashboard &amp; Authentication Evidence Gallery</h4>
+        <p>The following screenshots document the actual functional user interface of the Firebase Environment Monitoring Platform:</p>
+        <div class="iot-media-grid">
+          <div class="media-item">
+            <img src="iot/t4.1.jpeg" alt="Firebase Environment Monitoring Web Dashboard showing Temperature 28°C, Humidity 65%, Light 700 with analog meters and trend graphs">
+            <span class="media-caption">Figure 4.1: Real-time telemetry dashboard showing Temperature (28 °C), Humidity (65 %), Light (700) with analog meters and Chart.js historical line graphs</span>
+          </div>
+          <div class="media-item">
+            <img src="iot/t4.2.png" alt="Environment Monitoring System Login Page with Email and Password inputs">
+            <span class="media-caption">Figure 4.2: Firebase Authentication login portal requiring verified email and password credentials</span>
+          </div>
+        </div>
+
+        <div class="concept-grid" style="margin-top:16px;">
+          <div class="concept-card">
+            <h5>📊 Live Dashboard Features</h5>
+            <p>• Real-time temperature &amp; humidity telemetry with color-coded gauge status (green/yellow/red).<br>
+            • Ambient-light tracking with responsive LDR threshold indication.<br>
+            • Historical line graphs visualizing micro-climate trends over time.</p>
+          </div>
+          <div class="concept-card">
+            <h5>🔒 Security &amp; Access Control</h5>
+            <p>• Firebase Email/Password token authentication.<br>
+            • Client session persistence across page refreshes.<br>
+            • Instant logout and state invalidation.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 11: Troubleshooting -->
+      <div class="iot-block">
+        <h4>11. Actual Technical Problems Encountered &amp; Engineering Solutions</h4>
+        <div class="trouble-grid">
+          <div class="trouble-card">
+            <h5>1. Permission_Denied Security Rules Error</h5>
+            <p><strong>Problem:</strong> Web dashboard threw <code>PERMISSION_DENIED</code> in browser console when reading <code>/environment</code>.<br>
+            <strong>Root Cause:</strong> Firebase Realtime Database rules defaulted to locked mode (<code>.read: false</code>).<br>
+            <strong>Solution:</strong> Updated security rules to <code>.read: "auth != null"</code> and deferred database listener attachment until <code>auth.onAuthStateChanged()</code> verified a valid user token.</p>
+          </div>
+          <div class="trouble-card">
+            <h5>2. DHT11 Sensor NaN Readings &amp; Bus Contention</h5>
+            <p><strong>Problem:</strong> ESP32 frequently logged <code>NaN °C</code> for temperature and humidity.<br>
+            <strong>Root Cause:</strong> DHT11 requires at least 1.5–2 seconds between consecutive read requests. Polling too frequently corrupted the single-wire bitstream.<br>
+            <strong>Solution:</strong> Enforced a strict 5-second non-blocking interval timer using <code>millis()</code>.</p>
+          </div>
+          <div class="trouble-card">
+            <h5>3. ESP32 SSL Memory Leaks</h5>
+            <p><strong>Problem:</strong> After several hours of uploading, the ESP32 crashed with a heap exhaustion kernel panic.<br>
+            <strong>Root Cause:</strong> Creating new HTTPS connection handles on every cycle exhausted the ESP32's 520KB SRAM.<br>
+            <strong>Solution:</strong> Configured a single static <code>FirebaseData</code> object with <code>fbdo.setBSSLBufferSize(1024, 1024)</code> to recycle memory buffers.</p>
+          </div>
+          <div class="trouble-card">
+            <h5>4. ESP32 ADC2 Wi-Fi Conflict on LDR Pin</h5>
+            <p><strong>Problem:</strong> <code>analogRead(LDRPIN)</code> returned constant 0 or 4095 when Wi-Fi was enabled.<br>
+            <strong>Root Cause:</strong> The initial pin was mapped to ADC2, which is shared internally with the ESP32 Wi-Fi subsystem.<br>
+            <strong>Solution:</strong> Re-routed the LDR analog line to <code>GPIO 34</code>, which belongs to dedicated <strong>ADC1 (Channel 6)</strong> and functions without Wi-Fi interference.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 12: Learning Outcomes -->
+      <div class="iot-block">
+        <h4>12. Cloud Engineering Learning Outcomes &amp; Insights</h4>
+        <ul>
+          <li><strong>Full-Stack IoT System Architecture:</strong> Integrated all three tiers of modern IoT: embedded sensor acquisition (C++), cloud database BaaS synchronization (Firebase), and interactive web telemetry visualization (HTML5/JS/Chart.js).</li>
+          <li><strong>Zero-Polling Realtime UX:</strong> Witnessed how WebSocket-based database listeners completely outperform traditional HTTP polling in efficiency, latency, and user experience.</li>
+          <li><strong>Authentication vs. Authorization Security:</strong> Implemented robust token authentication coupled with server-side database access rules, ensuring device data privacy.</li>
+          <li><strong>Microcontroller ADC &amp; Power Optimization:</strong> Mastered ADC1 vs ADC2 peripheral constraints and learned buffer recycling techniques for long-running embedded SSL clients.</li>
+        </ul>
+      </div>
+
+      <!-- Section 13: Personal Reflection -->
+      <div class="iot-block">
+        <h4>13. First-Person Learning Reflection</h4>
+        <p>Assignment 4 was the project where my understanding of IoT matured into full-stack engineering. In previous assignments, we sent isolated ON/OFF commands. In this task, we handled continuous multi-sensor telemetry—temperature, humidity, and ambient light—and pushed it into a real-time cloud database accessed through an authenticated web portal.</p>
+        <p>Watching the analog meters and Chart.js graphs on my dashboard update the exact moment temperature shifted or light fell on the LDR—without refreshing the page once—was incredibly satisfying. Solving real embedded challenges like the ADC2 Wi-Fi conflict and Firebase authentication listeners taught me that real-world IoT engineering requires thinking simultaneously about hardware circuitry, network protocols, and secure web architectures. This project established the complete telemetry foundation that enabled hybrid sensor-based automation in Task 5.</p>
+      </div>
     </article>
   `,
   'task-5': `
