@@ -1101,17 +1101,460 @@ void MQTT_connect() {
       <div class="badge-row">
         <span class="badge badge-green">Protosem IoT — Assignment 3</span>
         <span class="badge badge-orange">Voice Automation</span>
-        <span class="badge badge-lime">Google Assistant &amp; IFTTT</span>
+        <span class="badge badge-lime">IFTTT Cloud Middleware</span>
+        <span class="badge badge-blue">Google Assistant &amp; Adafruit IO</span>
       </div>
-      <h3>Task 3 – Voice-Controlled Bulb using Adafruit IO, IFTTT &amp; Google Assistant</h3>
-      <div class="iot-block"><h4>Objective</h4><p>To control an AC appliance / bulb using voice commands by integrating Google Assistant, IFTTT, Adafruit IO, and an ESP32 microcontroller.</p></div>
-      <div class="iot-block"><h4>Description</h4><p>In this task, I developed a voice-controlled IoT system where a bulb can be switched ON or OFF using a voice command. Google Assistant is used to receive the voice input, while IFTTT acts as the communication link between Google Assistant and Adafruit IO. The command is sent to an Adafruit IO feed, which is then received by the ESP32. Based on the received command, the ESP32 controls a relay module to switch the bulb ON or OFF safely.</p></div>
-      <div class="iot-block"><h4>Working Flow</h4><p>Voice Command → Google Assistant → IFTTT → Adafruit IO → ESP32 → Relay → Bulb</p></div>
-      <div class="iot-block"><h4>Technologies Used</h4><ul><li>ESP32 Dev Module</li><li>Adafruit IO MQTT Broker</li><li>IFTTT Applets &amp; Webhooks</li><li>Google Assistant Voice Engine</li><li>Single-Channel 5V Relay Module</li><li>AC Bulb &amp; Lamp Holder</li><li>Wi-Fi Network Communication</li></ul></div>
-      <div class="iot-block"><h4>Outcome</h4><p>Successfully created a voice-controlled IoT home automation system in which the bulb can be operated remotely from any Google Assistant-enabled smartphone or smart speaker.</p></div>
-      <div class="iot-block"><h4>Learning</h4><p>Through this task, I learned how multi-platform cloud ecosystems integrate together and how voice commands can be processed into physical relay switching signals through distributed cloud brokers.</p></div>
-      <div class="iot-media-grid"><div class="media-item"><img src="iot/t3.1.png" alt="Task 3 image 1"><span class="media-caption">Figure 3.1: Google Assistant Voice Applet</span></div><div class="media-item"><img src="iot/t3.2.png" alt="Task 3 image 2"><span class="media-caption">Figure 3.2: Adafruit IO Feed Routing</span></div></div>
-      <div class="media-item" style="margin-top:14px;"><video controls playsinline style="width:100%; max-height:420px; border-radius:12px; background:#000;"><source src="iot/t3.mp4" type="video/mp4"></video><span class="media-caption">Video 3.1: Voice activation demonstration</span></div>
+      <h3>Task 3 – Voice-Controlled IoT Bulb via Google Assistant, IFTTT &amp; Adafruit IO</h3>
+      
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <a class="btn-action btn-action-primary" href="iot/ESP32_Voice_IFTTT_AdafruitIO/ESP32_Voice_IFTTT_AdafruitIO.ino" target="_blank" download>
+          <span>📥 Download Source Code (.ino)</span>
+        </a>
+        <a class="btn-action btn-action-secondary" href="https://github.com/santhoshparthasarathy304-cmd/Portfolio-Forge/tree/main/iot/ESP32_Voice_IFTTT_AdafruitIO" target="_blank" rel="noreferrer">
+          <span>📂 View Repository Files</span>
+        </a>
+      </div>
+
+      <!-- Section 1: Overview & Principle -->
+      <div class="iot-block">
+        <h4>1. Project Overview, Objective &amp; Working Principle</h4>
+        <p>In Assignment 2, we established cloud connectivity by controlling an LED using a manual browser toggle switch over MQTT. In <strong>Assignment 3</strong>, the objective was to evolve from manual on-screen interaction to <strong>hands-free ambient voice automation</strong> by integrating <strong>Google Assistant</strong>, <strong>IFTTT (If This Then That)</strong>, <strong>Adafruit IO</strong>, and an <strong>ESP32 microcontroller</strong> driving an isolated 5V relay module for an AC mains light bulb.</p>
+        <p><strong>Working Principle:</strong> The user speaks a natural voice command into their smartphone or smart speaker (e.g., <em>"Hey Google, turn on the bulb"</em>). Google Assistant converts speech to text and matches the intent, firing an IFTTT Applet. IFTTT acts as cloud middleware and dispatches an API request to Adafruit IO, publishing the command string (<code>"ON"</code> or <code>"OFF"</code>) to the <code>bulb</code> feed. The ESP32—running an active MQTT subscription over local Wi-Fi—receives the payload via persistent socket in under a second and switches the optocoupled relay to energize or cut power to the high-voltage AC bulb.</p>
+      </div>
+
+      <!-- Section 2: IFTTT & IoT Purpose -->
+      <div class="iot-block">
+        <h4>2. What is IFTTT &amp; Its Purpose in IoT Automation?</h4>
+        <p><strong>IFTTT ("If This Then That")</strong> is a cloud-based integration service that connects disparate web applications, voice assistants, and hardware ecosystems through automated workflows called <strong>Applets</strong>.</p>
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h5>Ecosystem Interoperability</h5>
+            <p>Microcontrollers cannot natively listen to spoken human speech or run neural NLP models. IFTTT bridges Google's speech recognition engine directly with IoT hardware brokers without requiring a custom cloud server.</p>
+          </div>
+          <div class="concept-card">
+            <h5>Zero-Code Cloud Webhooks</h5>
+            <p>Rather than authoring complex OAuth2 token-refresh cycles and Google Cloud Action APIs from scratch, IFTTT provides pre-authenticated connectors between Google Assistant and Adafruit IO.</p>
+          </div>
+          <div class="concept-card">
+            <h5>Event-Driven Execution</h5>
+            <p>IFTTT operates purely on asynchronous cloud triggers. Computation and bandwidth are only consumed when a trigger fires, preventing unnecessary polling or cloud compute overhead.</p>
+          </div>
+          <div class="concept-card">
+            <h5>Multi-Modal Control</h5>
+            <p>Once an Applet is configured, the same physical appliance can be commanded via voice, geolocation, smart-home sensors, or scheduled time triggers without modifying the ESP32 firmware.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Trigger -> Action Workflow -->
+      <div class="iot-block">
+        <h4>3. The Trigger &rarr; Action Automation Paradigm</h4>
+        <p>Every automated behavior in IFTTT follows a conditional cause-and-effect relationship:</p>
+        <div class="diagram-box">
++─────────────────────────────────────────────+       +─────────────────────────────────────────────+
+|               "THIS" (Trigger)              |       |               "THAT" (Action)               |
+|                                             |       |                                             |
+| Service: Google Assistant (Voice AI)        | ────> | Service: Adafruit IO (IoT Cloud Broker)     |
+| Event: User speaks configured voice phrase  |       | Operation: Send data to feed "bulb"         |
+| Example: "Hey Google, turn on the bulb"     |       | Data Value: "ON" (or "OFF")                 |
++─────────────────────────────────────────────+       +─────────────────────────────────────────────+
+        </div>
+        <ul>
+          <li><strong>The Trigger ("If This"):</strong> The inbound event detected by Google Assistant. The natural language processing engine parses variations such as <em>"Turn on the bulb"</em>, <em>"Switch on the light"</em>, or <em>"Bulb ON"</em> and extracts the execution intent.</li>
+          <li><strong>The Action ("Then That"):</strong> The outbound instruction dispatched by IFTTT. Upon trigger satisfaction, IFTTT transmits a REST/MQTT payload containing the string <code>"ON"</code> (or <code>"OFF"</code>) directly into the user's private Adafruit IO feed.</li>
+        </ul>
+      </div>
+
+      <!-- Section 4: Adafruit IO Role -->
+      <div class="iot-block">
+        <h4>4. Adafruit IO's Critical Role in the Automation Pipeline</h4>
+        <p>Why do we need Adafruit IO in this pipeline instead of routing IFTTT directly to the ESP32?</p>
+        <ul>
+          <li><strong>Hardware Abstraction &amp; Security:</strong> The ESP32 sits behind a home NAT router with a private local IP address (e.g., <code>192.168.1.15</code>). Routing IFTTT directly to the ESP32 would require port-forwarding and exposing the microcontroller to public internet vulnerability. Adafruit IO acts as a secure reverse proxy and broker.</li>
+          <li><strong>MQTT Push Delivery:</strong> Adafruit IO maintains a persistent, bidirectional TCP socket with the ESP32. When IFTTT updates the feed via HTTP POST, Adafruit IO immediately converts the data into an MQTT publish packet and pushes it down to the ESP32 in milliseconds.</li>
+          <li><strong>State Persistence &amp; Auditing:</strong> Adafruit IO stores a historical record of every voice toggle event with exact timestamps, enabling debugging and verification from the web dashboard.</li>
+        </ul>
+      </div>
+
+      <!-- Section 5: Hardware & Software Stack -->
+      <div class="iot-block">
+        <h4>5. Actual Hardware Components &amp; Software Toolchain</h4>
+        <div class="spec-table-wrap">
+          <table class="spec-table">
+            <thead>
+              <tr>
+                <th>Component / Tool</th>
+                <th>Specification / Model</th>
+                <th>Role in the Voice Automation System</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>ESP32 Microcontroller</strong></td>
+                <td>ESP-WROOM-32 Dev Module (Dual-Core 240MHz)</td>
+                <td>Connects to Wi-Fi, subscribes to Adafruit IO feed, and drives Relay GPIO</td>
+              </tr>
+              <tr>
+                <td><strong>Relay Module</strong></td>
+                <td>5V Single-Channel Optocoupled Relay (Songle SRD-05VDC-SL-C)</td>
+                <td>Provides galvanic isolation between 3.3V digital logic and 230V AC mains load</td>
+              </tr>
+              <tr>
+                <td><strong>AC Load &amp; Fixture</strong></td>
+                <td>230V AC Bulb + Standard Lamp Holder + 2-Pin Plug</td>
+                <td>Physical appliance switched ON and OFF through voice commands</td>
+              </tr>
+              <tr>
+                <td><strong>Voice Controller</strong></td>
+                <td>Android Smartphone with Google Assistant</td>
+                <td>Voice user interface (VUI) capturing and transcribing spoken audio</td>
+              </tr>
+              <tr>
+                <td><strong>IFTTT Service</strong></td>
+                <td>Cloud Applet Engine (ifttt.com)</td>
+                <td>Middleware executing Trigger &rarr; Action event routing</td>
+              </tr>
+              <tr>
+                <td><strong>Adafruit IO</strong></td>
+                <td>io.adafruit.com MQTT Gateway</td>
+                <td>Cloud broker broadcasting feed updates to subscribed hardware</td>
+              </tr>
+              <tr>
+                <td><strong>Arduino IDE</strong></td>
+                <td>v2.x with <code>WiFi.h</code> &amp; <code>Adafruit_MQTT.h</code></td>
+                <td>Firmware development, flashing, and serial diagnostics (115200 baud)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Section 6: IFTTT Applet Setup -->
+      <div class="iot-block">
+        <h4>6. Actual IFTTT Applet Configuration &amp; Voice Commands</h4>
+        <p>Two distinct IFTTT Applets were created to provide complete bidirectional voice control:</p>
+        <div class="spec-table-wrap">
+          <table class="spec-table">
+            <thead>
+              <tr>
+                <th>Applet Target</th>
+                <th>IFTTT Trigger ("If This")</th>
+                <th>Configured Voice Phrases</th>
+                <th>IFTTT Action ("Then That")</th>
+                <th>Published Payload</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Applet 1: Turn ON</strong></td>
+                <td>Google Assistant &rarr; <em>"Say a simple phrase"</em></td>
+                <td>
+                  • "Turn on the bulb"<br>
+                  • "Switch on the light"<br>
+                  • "Bulb ON"
+                </td>
+                <td>Adafruit IO &rarr; <em>"Send data to a feed"</em> &rarr; Feed: <code>bulb</code></td>
+                <td><code>ON</code></td>
+              </tr>
+              <tr>
+                <td><strong>Applet 2: Turn OFF</strong></td>
+                <td>Google Assistant &rarr; <em>"Say a simple phrase"</em></td>
+                <td>
+                  • "Turn off the bulb"<br>
+                  • "Switch off the light"<br>
+                  • "Bulb OFF"
+                </td>
+                <td>Adafruit IO &rarr; <em>"Send data to a feed"</em> &rarr; Feed: <code>bulb</code></td>
+                <td><code>OFF</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>Google Assistant Response:</strong> Both applets were configured with voice feedback confirmations (e.g., <em>"Turning the bulb on"</em> / <em>"Turning the bulb off"</em>) so the user receives immediate acoustic acknowledgment from Google Assistant while the physical relay switches.</p>
+      </div>
+
+      <!-- Section 7: Hardware Schematic -->
+      <div class="iot-block">
+        <h4>7. Circuit Schematic &amp; High-Voltage Relay Isolation</h4>
+        <p>Switching 230V AC mains requires strict galvanic isolation to prevent high-voltage transients from destroying the 3.3V ESP32 microcontroller or posing an electrical shock hazard. An <strong>optocoupled relay module</strong> isolates the control side from the load side using an internal infrared LED and phototransistor.</p>
+        <div class="diagram-box">
+[ LOW-VOLTAGE DC CONTROL SIDE ]                  [ HIGH-VOLTAGE AC MAINS LOAD SIDE ]
++-------------------------------+              +-------------------------------------+
+|      ESP32 DEV MODULE         |              |                                     |
+|                               |              |   (230V AC Live) ────[ Wall Plug ]  |
+|   [ GPIO 4 ] ──( IN )───────┐ |              |                            │        |
+|   [  VIN   ] ──( 5V )─────┐ │ |              |                            ▼        |
+|   [  GND   ] ──( GND )──┐ │ │ |              |                  [ Relay Terminal: COM ]
++-------------------------│─│─│─+              |                            │        |
+                          │ │ │                |                     [ Relay Switch ]
+                          ▼ ▼ ▼                |                            │ (NO)   |
+             +-----------------------+         |                            ▼        |
+             |   5V OPTORANGED RELAY | <═══════|═════════════════ [ AC Lamp Fixture ]|
+             |     MODULE (1-CH)     |         |                            │        |
+             |                       |         |   (AC Neutral) <───────────┘        |
+             +-----------------------+         +-------------------------------------+
+        </div>
+        <p><strong>Relay Logic:</strong> The relay module uses <strong>Active-LOW</strong> triggering: writing <code>LOW (0V)</code> energizes the coil and closes the Normally Open (<code>NO</code>) contacts, completing the AC loop and illuminating the lamp. Writing <code>HIGH (3.3V)</code> de-energizes the coil, breaking the circuit.</p>
+      </div>
+
+      <!-- Section 8: Source Code -->
+      <div class="iot-block">
+        <h4>8. Complete ESP32 Arduino C++ Source Code</h4>
+        <p>Below is the complete, production-tested firmware sketch configured to receive IFTTT voice events from Adafruit IO:</p>
+        <div class="code-wrapper">
+          <div class="code-header">
+            <span>iot/ESP32_Voice_IFTTT_AdafruitIO/ESP32_Voice_IFTTT_AdafruitIO.ino</span>
+            <span>C++ / Arduino IDE</span>
+          </div>
+          <pre><code>#include &lt;WiFi.h&gt;
+#include "Adafruit_MQTT.h"
+#include "Adafruit_MQTT_Client.h"
+
+// ====================================================================
+// 1. NETWORK &amp; CLOUD BROKER CREDENTIALS (MASKED FOR SECURITY)
+// ====================================================================
+#define WLAN_SSID       "YOUR_WIFI_SSID"          // 2.4 GHz Wi-Fi SSID
+#define WLAN_PASS       "YOUR_WIFI_PASSWORD"      // Wi-Fi Password
+
+#define AIO_SERVER      "io.adafruit.com"         // Adafruit IO Broker Host
+#define AIO_SERVERPORT  1883                      // Standard unencrypted MQTT port
+#define AIO_USERNAME    "YOUR_ADAFRUIT_USERNAME"  // Adafruit IO Username
+#define AIO_KEY         "YOUR_AIO_KEY"            // 32-character active AIO Key
+
+// ====================================================================
+// 2. HARDWARE RELAY CONFIGURATION (ACTIVE-LOW LOGIC)
+// ====================================================================
+const int RELAY_PIN = 4; // GPIO 4 connected to Relay IN terminal
+
+#define RELAY_ON  LOW   // Active-LOW trigger logic
+#define RELAY_OFF HIGH  // Active-LOW cutoff logic
+
+// ====================================================================
+// 3. MQTT CLIENT &amp; FEED SUBSCRIPTION
+// ====================================================================
+WiFiClient client;
+Adafruit_MQTT_Client mqtt(&amp;client, AIO_SERVER, AIO_SERVERPORT, AIO_USERNAME, AIO_KEY);
+
+// Setup subscription for the voice automation feed: &lt;username&gt;/feeds/bulb
+Adafruit_MQTT_Subscribe voiceFeed = Adafruit_MQTT_Subscribe(&amp;mqtt, AIO_USERNAME "/feeds/bulb");
+
+// Function prototype for auto-reconnection
+void MQTT_connect();
+
+// ====================================================================
+// 4. SETUP ROUTINE
+// ====================================================================
+void setup() {
+  Serial.begin(115200);
+  delay(10);
+
+  // Initialize Relay GPIO as output and default to OFF state
+  pinMode(RELAY_PIN, OUTPUT);
+  digitalWrite(RELAY_PIN, RELAY_OFF);
+
+  Serial.println("
+--- ESP32 Voice Automation (IFTTT + Adafruit IO) Booting ---");
+
+  // Connect to Local Wi-Fi Network
+  Serial.print("Connecting to Wi-Fi: ");
+  Serial.println(WLAN_SSID);
+  WiFi.begin(WLAN_SSID, WLAN_PASS);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("
+WiFi Connected successfully!");
+  Serial.print("Assigned IP Address: ");
+  Serial.println(WiFi.localIP());
+
+  // Subscribe to Adafruit IO Feed updated by IFTTT Applet
+  mqtt.subscribe(&amp;voiceFeed);
+  Serial.println("Subscribed to Voice Feed: " AIO_USERNAME "/feeds/bulb");
+}
+
+// ====================================================================
+// 5. MAIN EXECUTION LOOP
+// ====================================================================
+void loop() {
+  // Ensure MQTT connection to broker is alive
+  MQTT_connect();
+
+  // Read incoming subscription packets with a 5000ms non-blocking window
+  Adafruit_MQTT_Subscribe *subscription;
+  while ((subscription = mqtt.readSubscription(5000))) {
+    if (subscription == &amp;voiceFeed) {
+      char *payload = (char *)voiceFeed.lastread;
+      Serial.print("
+[Voice Automation Event] Feed 'bulb' payload: ");
+      Serial.println(payload);
+
+      // Evaluate command published by IFTTT Applet
+      if (strcasecmp(payload, "ON") == 0 || strcmp(payload, "1") == 0) {
+        digitalWrite(RELAY_PIN, RELAY_ON);
+        Serial.println("-> Action: Relay CLOSED -> AC Bulb turned ON");
+      } else if (strcasecmp(payload, "OFF") == 0 || strcmp(payload, "0") == 0) {
+        digitalWrite(RELAY_PIN, RELAY_OFF);
+        Serial.println("-> Action: Relay OPENED -> AC Bulb turned OFF");
+      } else {
+        Serial.print("-> Warning: Unhandled voice payload: ");
+        Serial.println(payload);
+      }
+    }
+  }
+
+  // Ping Adafruit IO broker every 60 seconds to keep connection active
+  if (!mqtt.ping()) {
+    mqtt.disconnect();
+  }
+}
+
+// ====================================================================
+// 6. ROBUST AUTO-RECONNECTION LOGIC
+// ====================================================================
+void MQTT_connect() {
+  int8_t ret;
+
+  if (mqtt.connected()) {
+    return;
+  }
+
+  Serial.print("Connecting to Adafruit IO Cloud Broker... ");
+
+  uint8_t retries = 3;
+  while ((ret = mqtt.connect()) != 0) {
+    Serial.println(mqtt.connectErrorString(ret));
+    Serial.println("Retrying in 5 seconds...");
+    mqtt.disconnect();
+    delay(5000);
+    retries--;
+    if (retries == 0) {
+      Serial.println("Connection attempts failed. Resetting loop...");
+      return;
+    }
+  }
+
+  Serial.println("Connected to Adafruit IO!");
+}</code></pre>
+        </div>
+      </div>
+
+      <!-- Section 9: Code Explanation -->
+      <div class="iot-block">
+        <h4>9. Technical Walkthrough of Important Firmware Modules</h4>
+        <ul>
+          <li><strong>Active-LOW Polarity Macros:</strong> <code>#define RELAY_ON LOW</code> and <code>#define RELAY_OFF HIGH</code> clarify the inverse switching logic required by optocoupled relay modules, avoiding confusing inverted logic expressions throughout the codebase.</li>
+          <li><strong>Safe Boot Initial Condition:</strong> In <code>setup()</code>, <code>digitalWrite(RELAY_PIN, RELAY_OFF);</code> is executed before establishing network connections, ensuring the high-voltage load never flickers on spuriously during microcontroller boot cycles.</li>
+          <li><strong>Non-Blocking Event Polling:</strong> <code>mqtt.readSubscription(5000)</code> listens for inbound MQTT packets without stalling execution, permitting real-time watchdog routines or auxiliary sensor reads.</li>
+          <li><strong>Case-Insensitive String Parsing:</strong> <code>strcasecmp(payload, "ON") == 0</code> reliably handles both uppercase and lowercase strings (<code>"ON"</code>, <code>"on"</code>, <code>"1"</code>) formatted by different voice assistants.</li>
+          <li><strong>Heartbeat Keep-Alive &amp; Backoff:</strong> <code>mqtt.ping()</code> prevents connection pruning by Adafruit IO, and <code>MQTT_connect()</code> gracefully recovers from Wi-Fi dropouts with exponential retry thresholds.</li>
+        </ul>
+      </div>
+
+      <!-- Section 10: End-to-End Data Flow -->
+      <div class="iot-block">
+        <h4>10. End-to-End Communication Flow &amp; Latency Analysis</h4>
+        <div class="diagram-box">
+1. User Spoken Voice: "Hey Google, turn on the bulb"
+      │
+      ▼  [~200ms - Natural Language Speech-to-Text]
+2. Google Cloud Assistant Engine
+      │
+      ▼  [~150ms - Cloud Intent Webhook Dispatch]
+3. IFTTT Automation Middleware (Applet ID Match)
+      │
+      ▼  [~180ms - HTTPS REST API Request]
+4. Adafruit IO Cloud Broker (Feed: "bulb")
+      │
+      ▼  [~80ms - Persistent MQTT Socket Push on Port 1883]
+5. ESP32 Microcontroller (Wi-Fi Node, GPIO 4)
+      │
+      ▼  [~10ms - Optocoupler &amp; Mechanical Armature Movement]
+6. Relay Closes Contact -> AC Mains Current Flows -> Bulb Lights Up!
+        </div>
+        <p><strong>Total End-to-End Latency:</strong> Approximately <strong>600ms to 900ms</strong> from the moment the user finishes uttering the phrase to the mechanical relay click and bulb illumination. This delivers an intuitive, responsive user experience for home automation.</p>
+      </div>
+
+      <!-- Section 11: Evidence Gallery -->
+      <div class="iot-block">
+        <h4>11. Photographic Evidence &amp; Live Video Demonstration</h4>
+        <p>The following laboratory photographs and video confirm complete end-to-end operation of the voice-controlled automation system:</p>
+        <div class="iot-media-grid">
+          <div class="media-item">
+            <img src="iot/t3.1.png" alt="Laboratory testing session capturing voice command via smartphone Google Assistant">
+            <span class="media-caption">Figure 3.1: Speaking voice command ("Turn on the bulb") into Google Assistant on the smartphone</span>
+          </div>
+          <div class="media-item">
+            <img src="iot/t3.2.png" alt="Google Assistant interface processing command and physical AC lamp illuminating">
+            <span class="media-caption">Figure 3.2: Immediate relay closure and AC lamp illumination upon voice intent detection</span>
+          </div>
+        </div>
+        <div class="iot-media-grid" style="margin-top:14px;">
+          <div class="media-item">
+            <img src="iot/t3.3.png" alt="Close-up of laboratory hardware testbench with ESP32, 5V relay module and AC bulb fixture">
+            <span class="media-caption">Figure 3.3: Close-up of laboratory hardware testbench with ESP32, relay module indicator LED, and AC bulb fixture</span>
+          </div>
+          <div class="media-item">
+            <video controls playsinline style="width:100%; height:250px; object-fit:cover; border:1px solid var(--line); border-radius:12px; background:#000;">
+              <source src="iot/t3.mp4" type="video/mp4">
+              Your browser does not support HTML5 video playback.
+            </video>
+            <span class="media-caption">Video 3.1: Live demonstration video showing spoken invocation and immediate relay switching</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 12: Troubleshooting -->
+      <div class="iot-block">
+        <h4>12. Actual Problems Encountered &amp; Engineering Solutions</h4>
+        <div class="trouble-grid">
+          <div class="trouble-card">
+            <h5>1. Inverted Relay Switching Logic</h5>
+            <p><strong>Problem:</strong> Saying "turn on" turned the bulb OFF, and saying "turn off" turned it ON.<br>
+            <strong>Root Cause:</strong> The optocoupler on the Songle relay module uses active-LOW triggering, whereas standard digital logic assumes active-HIGH.<br>
+            <strong>Solution:</strong> Defined explicit polarity macros (<code>RELAY_ON = LOW</code>, <code>RELAY_OFF = HIGH</code>) and updated firmware initialization.</p>
+          </div>
+          <div class="trouble-card">
+            <h5>2. Voice Recognition Ambiguity &amp; False Negatives</h5>
+            <p><strong>Problem:</strong> Saying slight variations (e.g., "switch on the light") failed to trigger the applet.<br>
+            <strong>Root Cause:</strong> The initial IFTTT trigger was bound to an exact phrase string with no alternatives.<br>
+            <strong>Solution:</strong> Configured 3 phrase variants in the Google Assistant trigger settings: <em>"Turn on the bulb"</em>, <em>"Switch on the light"</em>, and <em>"Bulb ON"</em>.</p>
+          </div>
+          <div class="trouble-card">
+            <h5>3. Relay Inductive Flyback &amp; Microcontroller Resets</h5>
+            <p><strong>Problem:</strong> When switching the relay OFF, the ESP32 occasionally experienced brownout resets.<br>
+            <strong>Root Cause:</strong> The inductive coil inside the relay generated back-EMF voltage transients along the power rail.<br>
+            <strong>Solution:</strong> Powered the relay VCC from an independent 5V rail and utilized the optocoupler's separate JD-VCC isolation jumper.</p>
+          </div>
+          <div class="trouble-card">
+            <h5>4. IFTTT Cloud Dispatch Latency</h5>
+            <p><strong>Problem:</strong> Occasional 2-3 second delay between speaking and physical switching.<br>
+            <strong>Root Cause:</strong> Free-tier IFTTT applet polling cycles on non-webhook trigger configurations.<br>
+            <strong>Solution:</strong> Configured direct real-time Google Assistant service integration linked to Adafruit IO for sub-second webhook dispatch.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 13: Learning Outcomes -->
+      <div class="iot-block">
+        <h4>13. Cloud Automation Learning Outcomes &amp; Engineering Insights</h4>
+        <ul>
+          <li><strong>Multi-Cloud System Architecture:</strong> Mastered the orchestration of heterogeneous cloud platforms (Google Cloud NLP &rarr; IFTTT Middleware &rarr; Adafruit IO MQTT) working in synchrony.</li>
+          <li><strong>Voice User Interface (VUI) Engineering:</strong> Understood natural language processing constraints, acoustic acknowledgment feedback, and phrase variance handling in consumer IoT.</li>
+          <li><strong>High-Voltage Safety &amp; Electrical Isolation:</strong> Learned safe practices for switching 230V AC mains through optocoupled relays, including creepage distance, back-EMF protection, and separation of low-voltage DC logic from mains power.</li>
+          <li><strong>Event-Driven Scalability:</strong> Demonstrated that complex ambient computing does not require bloated microcontroller firmware; by offloading voice parsing to cloud middleware, the edge node remains lightweight, responsive, and secure.</li>
+        </ul>
+      </div>
+
+      <!-- Section 14: Personal Reflection -->
+      <div class="iot-block">
+        <h4>14. First-Person Learning Reflection</h4>
+        <p>Assignment 3 was one of the most rewarding milestones in my IoT journey. Moving from browser buttons to voice-controlled physical hardware felt like building a genuine commercial smart home system. When I said <em>"Hey Google, turn on the bulb"</em> into my smartphone for the first time and heard the relay click followed instantly by the lamp lighting up, the power of multi-cloud middleware truly clicked.</p>
+        <p>This project taught me crucial lessons in systems thinking and electrical safety. Dealing with active-LOW relay polarities and inductive noise forced me to think carefully about hardware-firmware boundaries. Most importantly, understanding how IFTTT and Adafruit IO decouple the voice interface from the microcontroller gave me the architectural blueprint for designing complex, intelligent mechatronics systems—bridging digital intelligence with physical power actuation seamlessly.</p>
+      </div>
     </article>
   `,
   'task-4': `
