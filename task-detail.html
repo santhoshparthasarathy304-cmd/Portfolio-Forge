@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Task Details - Protosem IoT</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -337,26 +340,7 @@ body {
   text-align: center;
 }
 
-/* Upload placeholder */
-.upload-placeholder-box {
-  margin: 16px 0;
-  padding: 24px 20px;
-  border: 2px dashed #cfded4;
-  border-radius: 12px;
-  background: #fcfdfc;
-  text-align: center;
-}
-.upload-placeholder-box h5 {
-  margin: 0 0 6px;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--muted);
-}
-.upload-placeholder-box p {
-  margin: 0;
-  font-size: 12.5px;
-  color: #7a847f;
-}
+
 
 @media (max-width: 680px) {
   .iot-media-grid { grid-template-columns: 1fr; }
@@ -1062,11 +1046,7 @@ void MQTT_connect() {
           </div>
         </div>
 
-        <!-- Standalone Dashboard Placeholder -->
-        <div class="upload-placeholder-box">
-          <h5>📷 Upload Placeholder: High-Resolution Standalone Adafruit IO Web Dashboard Screenshot</h5>
-          <p>This designated slot is reserved for a direct, full-screen browser capture of the Adafruit IO dashboard blocks and feed graph (e.g. <code>iot/t2.dashboard.png</code>). Real-world live testing evidence is documented above in Figures 2.1, 2.2, and Video 2.1.</p>
-        </div>
+
 
         <div class="media-item" style="margin-top:16px;">
           <video controls playsinline style="width:100%; max-height:420px; border-radius:12px; background:#000;">
